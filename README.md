@@ -1,6 +1,6 @@
 # Chat
 
-Chat Project to improve my code skills and my stack, where i document all my and the project evolution
+Chat Project to improve my code skills and my stack, where i document all my evolution and project's progress
 
 # STACK and FEATURES
 Django
