@@ -13,7 +13,6 @@ Celery
 TDD
 
 # installation
-
 # 1. Make the Virtual Environment
 python -m venv venv
 
@@ -31,6 +30,8 @@ pip install -r requirements.txt
 # 4. VsCode Extensions(optional)
 - SQLite Viewer
 
+WebSocket Tester:
+- https://hoppscotch.io/realtime/websocket
 
 # Features added so far
 
