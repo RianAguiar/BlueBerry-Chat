@@ -12,6 +12,15 @@ Redis
 Celery
 TDD
 
+# Goals
+database save messages
+websocket authentication with jwt
+make frontend with react
+add redis as chennel layer
+add celery for async tasks
+add docker
+switch from sqlite to postgresql
+
 # installation
 # 1. Make the Virtual Environment
 python -m venv venv
@@ -36,4 +45,5 @@ WebSocket Tester:
 
 - Login generating JWT tokens
 - Sign up new users feature
+
 
