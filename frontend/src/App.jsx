@@ -7,6 +7,13 @@ import './App.css'
 function App() {
   const [count, setCount] = useState(0)
 
+  function IrParaChat() {
+    setTela('chat')
+
+  }
+
+
+
   return (
     <>
       <section id="center">
@@ -119,4 +126,15 @@ function App() {
   )
 }
 
+function IndexInput() {
+  return(
+    <>
+    <input type="Room Name" />
+    </>
+  )
+}
+
+
 export default App
+
+
