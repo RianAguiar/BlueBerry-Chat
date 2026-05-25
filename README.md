@@ -35,6 +35,7 @@ venv\Scripts\activate
 
 # 3. Dependencies Installation
 pip install -r requirements.txt
+npm install
 
 # 4.optionals
 - SQLite Viewer(VScode extension)
