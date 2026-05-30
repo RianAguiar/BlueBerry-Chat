@@ -5,7 +5,7 @@ import SayMyName from './components/SayMyName'
 import User from './components/User'
 
 function App() {
-  const emoji = '❤'
+  const emoji = '🦇'
   return (
     <>
     <div className='indextopcontainer'>
@@ -13,7 +13,7 @@ function App() {
       <button id='signin' className='signin'>sign in</button>
     </div>
 
-    <h1 id='avocadochat' className='avocadochat'>{emoji}🥑Avocado Chat</h1>
+    <h1 id='avocadochat' className='avocadochat'>🥑Avocado Chat{emoji}</h1>
 
     <div className='indexcontainer'>
       <input type="" name="" id="indexinput" placeholder='Room Name' className='indexinput'/>
@@ -22,7 +22,7 @@ function App() {
     <div>
       <HelloWorld/>
       <SayMyName name='Ryan'/>
-      <User photo='urlphoto' username='Ryan'/>
+      <User photo='https://placehold.co/100' username='Ryan'/>
     </div>
     </>
   )
