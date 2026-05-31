@@ -4,7 +4,8 @@ body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: rgb(238, 240, 214);
   margin: 0;
-  background: rgb(60, 41, 79);
+  background: #3D2850;
+  background: radial-gradient(at right top, #3D2850, #010101);
 }
 
 #root {

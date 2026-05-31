@@ -17,19 +17,52 @@ button:hover{
 }
 
 .indexcontainer{
-  display: flex;
-  justify-content: center; /* Centraliza na horizontal */
-  align-items: center;     /* Centraliza na vertical */
- 
+  width: 190px;
+  
 }
+
+.indexcontainerdad{
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  
+}
+
 .avocadochat{
   padding: 100px;
 }
 
 .indexinput{
+  background-color: rgba(0, 0, 0, 0.100);
+  margin: 1px;
   padding: 10px;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: rgb(238, 240, 214);
+  border-width: 1px;
+  width: 100%;
+  box-sizing: border-box
+}
+
+.indexinput::placeholder{
+  color: rgb(238, 240, 214);
 }
 
 .indexenterbutton{
-  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.100);
+  color: rgb(238, 240, 214);
+  margin: 1px;
+  padding: 10px 73px;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: rgb(238, 240, 214);
+  border-width: 1px;
+  width: 100%;
+}
+
+.indexeasteregg{
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  font-size: 10px;
 }
