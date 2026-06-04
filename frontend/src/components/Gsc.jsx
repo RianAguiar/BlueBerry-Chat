@@ -2,9 +2,17 @@ import '../styles/Gsc.css'
 
 function Gsc(props) {
     const eastereggemoji = '🧛‍♀️'
+
+    function Som(){
+
+    }
+    
     return(
         <div>
-            <button className={props.className}>{eastereggemoji}</button>
+            <button onClick={Som}
+            className={props.className}>
+                {eastereggemoji}
+            </button>
         </div>
     ) 
 }

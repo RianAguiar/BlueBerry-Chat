@@ -1,3 +1,5 @@
+import '../styles/indexenterbutton.css'
+
 function Button(props) {
     return(
         <>

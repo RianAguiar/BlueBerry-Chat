@@ -1,20 +1,4 @@
-button{
-  transition: 0.5s;
-  border-style: solid;
-  border-width: 1px 1px 1px 1px;
-  border-radius: 5px;
 
-}
-
-button:hover{
-  transition: 0.5s;
-  color: rgb(255, 255, 255);
-  background-color: rgba(255, 255, 255, 0.19);
-  border-style: solid;
-  border-width: 1px 1px 1px 1px;
-  border-radius: 5px;
-
-}
 
 .indexcontainer{
   width: 190px;
@@ -33,21 +17,4 @@ button:hover{
 }
 
 
-.indexenterbutton{
-  background-color: rgba(0, 0, 0, 0.100);
-  color: rgb(238, 240, 214);
-  margin: 1px;
-  padding: 10px 73px;
-  border-radius: 6px;
-  border-style: solid;
-  border-color: rgb(238, 240, 214);
-  border-width: 1px;
-  width: 100%;
-}
 
-.indexeasteregg{
-  position: fixed;
-  bottom: 10px;
-  right: 10px;
-  font-size: 10px;
-}
