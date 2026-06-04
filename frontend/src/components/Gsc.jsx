@@ -3,18 +3,16 @@ import '../styles/Gsc.css'
 function Gsc(props) {
     const eastereggemoji = '🧛‍♀️'
 
-    function Som(){
-
+    const tocarAudio = () => {
+        const audio = new Audio('/sounds/GSC.mp3')
+        audio.play()
     }
-    
-    return(
+
+    return (
         <div>
-            <button onClick={Som}
-            className={props.className}>
-                {eastereggemoji}
-            </button>
+            <button onClick={tocarAudio} className={props.className}>{eastereggemoji}</button>
         </div>
-    ) 
+    )
 }
 
-export default Gsc
+export default Gsc;
