@@ -2,16 +2,16 @@ import '../styles/Gsc.css'
 
 function Gsc(props) {
     const eastereggemoji = '🧛‍♀️'
-
-    const tocarAudio = () => {
+    const TocarAudio = () => {
         const audio = new Audio('/sounds/GSC.mp3')
+        audio.volume = 0.3
         audio.play()
     }
 
     return (
-        <div>
-            <button onClick={tocarAudio} className={props.className}>{eastereggemoji}</button>
-        </div>
+        <>
+            <button onClick={TocarAudio} className={props.className}>{eastereggemoji}</button>
+        </>
     )
 }
 
