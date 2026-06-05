@@ -4,7 +4,7 @@ function Gsc(props) {
     const eastereggemoji = '🧛‍♀️'
     const TocarAudio = () => {
         const audio = new Audio('/sounds/GSC.mp3')
-        audio.volume = 0.3
+        audio.volume = 0.05
         audio.play()
     }
 
