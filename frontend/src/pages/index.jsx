@@ -1,4 +1,3 @@
-import {BrowserRouter as Router, Switch, Route, Link} from 'react-router-dom'
 import { useState } from 'react'
 import './styles/App.css'
 import Input from './components/Input'
@@ -6,7 +5,7 @@ import Button from './components/Button'
 import Gsc from './components/Gsc'
 import IndexForm from './components/IndexForm'
 
-function App() {
+function Index() {
   const eastereggemoji = '🧛‍♀️'
   return (
     <>
@@ -26,6 +25,4 @@ function App() {
 }
 
 
-export default App
-
-
+export default Index
