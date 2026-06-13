@@ -6,7 +6,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Index/>} />
+        <Route path="/" element={<Index />} />
         <Route path="/Chat" element={<Chat />} />
       </Routes>
     </BrowserRouter>
@@ -15,4 +15,5 @@ function App() {
 
 
 export default App
+
 

@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import './styles/App.css'
-import Input from './components/Input'
-import Button from './components/Button'
-import Gsc from './components/Gsc'
-import IndexForm from './components/IndexForm'
+import styles from '../styles/App.css'
+import Input from '../components/Input'
+import Button from '../components/Button'
+import Gsc from '../components/Gsc'
+import IndexForm from '../components/IndexForm'
 
 function Index() {
   const eastereggemoji = '🧛‍♀️'

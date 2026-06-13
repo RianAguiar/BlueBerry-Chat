@@ -1,16 +1,16 @@
-import { useState } from 'react';
-import './Chat.css';
+import { useState } from 'react'
+import styles from'../styles/Chat.css'
 
 function Chat() {
-    const [message, setMessage] = useState('');
-    const [chat, setChat] = useState([]);
+    const [message, setMessage] = useState('')
+    const [chat, setChat] = useState([])
 
     const handleSend = () => {
         if (message.trim() !== '') {
-            setChat([...chat, message]);
-            setMessage('');
+            setChat([...chat, message])
+            setMessage('')
         }
-    };
+    }
 
     return (
         <div className="chat-container">
@@ -34,4 +34,4 @@ function Chat() {
     );
 }
 
-export default Chat;
+export default Chat
