@@ -1,4 +1,5 @@
 # Chat
+My project consists of a practical, anonymous chat system that requires no account creation or login. To access it, users simply need to enter with a nickname and the name of the room they wish to join. If the specified room doesn't exist, it's created automatically, if it already exists, the system retrieves the message history from previous participants. The goal is to provide a simple, fast, and accessible communication platform while preserving the participants' anonymity.
 
 Chat Project to improve my code skills and my stack, where i document all my evolution and project's progress
 
