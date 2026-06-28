@@ -9,6 +9,6 @@ class Mensagem(models.Model):
     sala = models.ForeignKey(Sala, related_name='mensagens', on_delete=models.CASCADE)
     username = models.CharField(max_length=50)
     conteudo = models.TextField()
-    enviado_em = models.DateTimeField(auto_now_add=True)
+    enviado_as = models.DateTimeField(auto_now_add=True)
     def __str__(self):
         return f'{self.username} : {self.conteudo}'

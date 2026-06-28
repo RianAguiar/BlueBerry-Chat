@@ -1,12 +1,13 @@
-from django.contrib.auth.models import Group, User
+from .models import Sala, Mensagem
 from rest_framework import serializers
- 
-class UserSerializer(serializers.HyperlinkedModelSerializer):
-    class Meta:
-        model = User
-        fields = ['url', 'username', 'email', 'groups']
 
-class Groupserializer(serializers.HyperlinkedModelSerializer):
+class SalaSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Group
-        fields = ['url', 'name']
+        model = Sala
+        fields = '__all__'
+        
+class MensagemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mensagem
+        fields = '__all__'
+        read_only_fields = ['enviado_as']
