@@ -45,9 +45,6 @@ npm install
 WebSocket Tester:
 - https://hoppscotch.io/realtime/websocket
 
-# Features added so far
 
-- Login generating JWT tokens
-- Sign up new users feature
 
 
