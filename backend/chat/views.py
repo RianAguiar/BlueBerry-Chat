@@ -31,6 +31,7 @@ class MensagensAPIView(APIView):
         return Response(serializer.data, status=201)
 
 ''' Json para teste
+
 {
     "username": "joao",
     "conteudo": "Olá, pessoal!",
