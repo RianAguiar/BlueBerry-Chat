@@ -3,13 +3,13 @@ import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
 import { useEffect, useState } from 'react'
 import '../styles/Chat.css'
 
-export default function Chat() {
+export function Chat() {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([]);
 
     async function BuscarMensagens() {
         try {
-            const resposta = await fetch ('http://localhost:8000/sala/<int:chat_id>/')
+            const resposta = await fetch ('http://127.0.0.1:8000/api/sala/projetochat/mensagens/')
 
         if (!resposta.ok) {throw new Error('erro ao buscar mensagens')}
         const dados = await resposta.json();
@@ -18,29 +18,8 @@ export default function Chat() {
         catch (erro) {console.log(erro);}
     }
 
+    
     useEffect(()=>{BuscarMensagens();},[])
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     const handleSend = () => {
         if (message.trim() !== '') {
