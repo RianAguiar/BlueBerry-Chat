@@ -3,6 +3,6 @@ from .views import SalaAPIView
 from .views import MensagensAPIView
 
 urlpatterns = [
-    path("", SalaAPIView.as_view(), name="Index"),
-    path("sala/<int:chat_id>/", MensagensAPIView.as_view(), name="Sala"),
+    path("sala/<str:nome>", SalaAPIView.as_view(), name="Sala"),
+    path("sala/<str:nome>/mensagens/", MensagensAPIView.as_view(), name="Mensagens"),
 ]
