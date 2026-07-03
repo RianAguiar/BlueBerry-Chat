@@ -1,36 +1,45 @@
 import { Link } from "react-router-dom";
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import '../styles/Chat.css'
 
-
-const chat = {
-    "sala": {
-        "id": 1321,
-        "nome": "Sala Projeto Chat"
-    },
-    "mensagens": [
-        {
-            "username": "Carlinhos",
-            "conteudo": "A jovem guarda foi um movimento",
-            "enviado_as": "01/07/2026, 14:24"
-        },
-        {
-            "username": "Dalva",
-            "conteudo": "A cleide faz oq mesmo?",
-            "enviado_as": "01/07/2026, 14:23"
-        },
-        {
-            "username": "Cleide",
-            "conteudo": "oi, boa tarde",
-            "enviado_as": "01/07/2026, 14:34"
-        }
-    ]
-}
-
-function Chat() {
+export default function Chat() {
     const [message, setMessage] = useState('')
-    const [messages, setMessages] = useState(chat.mensagens);
+    const [messages, setMessages] = useState([]);
+
+    async function BuscarMensagens() {
+        try {
+            const resposta = await fetch ('http://localhost:8000/sala/<int:chat_id>/')
+
+        if (!resposta.ok) {throw new Error('erro ao buscar mensagens')}
+        const dados = await resposta.json();
+        setMessages(dados);
+        }
+        catch (erro) {console.log(erro);}
+    }
+
+    useEffect(()=>{BuscarMensagens();},[])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     const handleSend = () => {
