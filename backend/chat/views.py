@@ -6,6 +6,7 @@ from .serializers import MensagemSerializer, SalaSerializer
 
 #Buscar sala, ver se existe, se existir envia o usuario para essa sala e resgata as mensagens enteriores,
 # se n existir cria automaticamente a sala e envia o usuario para ela
+
 class SalaAPIView(APIView):
     def get(self,request, nome): 
         sala, criada = Sala.objects.get_or_create(nome=nome)

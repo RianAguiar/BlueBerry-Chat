@@ -7,10 +7,8 @@ export function Chat() {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([]);
 
-
-    /* SOMENTE PARA TESTE, POSTERIORMENTE VOU PEGAR O USERNAME PELO INPUT DO INDEX */
-    const username = 'Ryan'
-
+    /* BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) */
+    const username = localStorage.getItem('username')
 
     /* BUSCAR DADOS(MENSAGENS) NA API */
     async function BuscarMensagens() {
@@ -29,25 +27,26 @@ export function Chat() {
 
     /* ENVIAR DADOS(MENSAGENS) PARA A API */
     const enviarDados = async () => {
-    try {
-      const resposta = await fetch("http://127.0.0.1:8000/api/sala/projetochat/mensagens/", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({
-            username : username,
-            conteudo : message,
-            enviado_as : new Date().toLocaleString()
-        })
-      })
-      if (!resposta.ok) {
-        throw new Error("Erro ao enviar as mensagens")}
-        const dados = await resposta.json()
-        setMessage('')
-        console.log(dados)
-    }
+        try {
+            const resposta = await fetch("http://127.0.0.1:8000/api/sala/projetochat/mensagens/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: username,
+                    conteudo: message,
+                    enviado_as: new Date().toLocaleString()
+                })
+            })
+            if (!resposta.ok) {
+                throw new Error("Erro ao enviar as mensagens")
+            }
+            const dados = await resposta.json()
+            setMessage('')
+            console.log(dados)
+        }
 
-    catch (erro) {console.error(erro)}
-}
+        catch (erro) { console.error(erro) }
+    }
 
     return (
         <>

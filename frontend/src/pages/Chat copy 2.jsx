@@ -7,33 +7,47 @@ export function Chat() {
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([]);
 
+
+    /* SOMENTE PARA TESTE, POSTERIORMENTE VOU PEGAR O USERNAME PELO INPUT DO INDEX */
+    const username = 'Ryan'
+
+
+    /* BUSCAR DADOS(MENSAGENS) NA API */
     async function BuscarMensagens() {
         try {
-            const resposta = await fetch ('http://127.0.0.1:8000/api/sala/projetochat/mensagens/')
+            const resposta = await fetch('http://127.0.0.1:8000/api/sala/projetochat/mensagens/')
 
-        if (!resposta.ok) {throw new Error('erro ao buscar mensagens')}
-        const dados = await resposta.json();
-        setMessages(dados);
+            if (!resposta.ok) { throw new Error('erro ao buscar mensagens') }
+            const dados = await resposta.json();
+            setMessages(dados);
         }
-        catch (erro) {console.log(erro);}
+        catch (erro) { console.log(erro); }
+    }
+    useEffect(() => { BuscarMensagens(); }, [])
+
+
+
+    /* ENVIAR DADOS(MENSAGENS) PARA A API */
+    const enviarDados = async () => {
+    try {
+      const resposta = await fetch("http://127.0.0.1:8000/api/sala/projetochat/mensagens/", {
+        method: "POST",
+        headers: {"Content-Type": "application/json"},
+        body: JSON.stringify({
+            username : username,
+            conteudo : message,
+            enviado_as : new Date().toLocaleString()
+        })
+      })
+      if (!resposta.ok) {
+        throw new Error("Erro ao enviar as mensagens")}
+        const dados = await resposta.json()
+        setMessage('')
+        console.log(dados)
     }
 
-    
-    useEffect(()=>{BuscarMensagens();},[])
-
-    const handleSend = () => {
-        if (message.trim() !== '') {
-            const novaMensagem = {
-                id: Date.now(),
-                username: "Você",
-                conteudo: message,
-                enviado_as: new Date().toLocaleString()
-            };
-
-            setMessages([...messages, novaMensagem]);
-            setMessage('');
-        }
-    }
+    catch (erro) {console.error(erro)}
+}
 
     return (
         <>
@@ -60,7 +74,7 @@ export function Chat() {
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Digite uma mensagem..."
                         />
-                        <SlArrowRightCircle onClick={handleSend} />
+                        <SlArrowRightCircle onClick={enviarDados} />
                     </div>
                 </div>
             </div>
