@@ -39,6 +39,7 @@
     width: 700px;
     display: flex;
     gap: 10px;
+    
 }
 
 .input-container input {
@@ -46,8 +47,10 @@
     flex: 1;
     padding: 10px;
     border-radius: 10px;
-    border-style: none;
+    border-style: solid;
     transition: 0.5s;
+    border-width: 1px;
+    border-color: rgba(240, 248, 255, 0.200);
 }
 
 .input-container input:hover {
@@ -72,6 +75,7 @@
 }
 
 .exit svg{
+    position: fixed;
     color: white;
     margin-top: 50px;
     display: flex;
