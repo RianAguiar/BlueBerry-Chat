@@ -8,8 +8,6 @@ function Gsc(props) {
         audio.play()
     }
 
-    
-
     return (
         <>
             <button onClick={TocarAudio} className={props.className}>{eastereggemoji}</button>
