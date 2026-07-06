@@ -7,6 +7,7 @@ class SalaSerializer(serializers.ModelSerializer):
         fields = '__all__'
         
 class MensagemSerializer(serializers.ModelSerializer):
+    enviado_as = serializers.DateTimeField(format="%d/%m/%Y %H:%M")
     class Meta:
         model = Mensagem
         fields = '__all__'

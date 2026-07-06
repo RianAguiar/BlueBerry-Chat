@@ -1,15 +1,15 @@
 from django.urls import path
-from .views import SalaAPIView, MensagensAPIView, ProcessarAPIView
+from .views import SalaAPIView, MensagensAPIView
 
 
 urlpatterns = [
-    # para pegar a url(nome da sala) digitada no index
-    path("sala/", ProcessarAPIView.as_view(), name="Processar"),
 
-    # entrar ou criar sala
+    #GET    /api/sala/<nome>/         pegar info da sala
+    #POST   /api/sala/<nome>/         entrar ou criar sala
     path("sala/<str:nome>/", SalaAPIView.as_view(), name="Sala"),
     
-    # pegar as mensagens da sala
+    #GET    /api/sala/<nome>/mensagens/     listar mensagens
+    #POST   /api/sala/<nome>/mensagens/     enviar mensagem
     path("sala/<str:nome>/mensagens/", MensagensAPIView.as_view(), name="Mensagens"),
 ]
 

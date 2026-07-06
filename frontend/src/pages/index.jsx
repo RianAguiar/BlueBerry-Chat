@@ -12,14 +12,22 @@ function Index() {
   const [nome, setNome] = useState('')
   const navigate = useNavigate();
 
+  function handleKeyDown(e) {
+      if (e.key === "Enter") {
+          e.preventDefault();
+
+          if (!message.trim()) {
+              alert("Digite uma mensagem.");
+              return;
+          }
+
+          enviarDados();
+      }
+  }
+
   /*ENVIAR URL(NOME DA SALA)DIGITADO NO FORM */
   async function IrParaSala(e) {
     e.preventDefault();
-
-    if (!username.trim() || !nome.trim()) {
-      alert("Preencha o nome de usuário e o nome da sala.");
-      return;
-    }
 
     localStorage.setItem("username", username);
     const resposta = await fetch(
@@ -41,7 +49,6 @@ function Index() {
   }
   return (
     <>
-      <Link to="/sala/teste">Chat</Link>
 
       <h1 id='avocadochat' className='avocadochat'>🥑Avocado Chat</h1>
 
@@ -49,20 +56,24 @@ function Index() {
         <div className='indexcontainer'>
           <div>
 
-            <form onSubmit={IrParaSala}>
+            <form onSubmit={IrParaSala} onKeyDown={handleKeyDown}>
 
               <input type="text" id='name' name='name' placeholder="Your Name" className="indexinput"
-                onChange={(e) => setUsername(e.target.value)} />
+                onChange={(e) => setUsername(e.target.value)}
+               
+              />
 
               <input type="text" id='roomname' name='roomname' placeholder="Room Name" className="indexinput"
-                onChange={(e) => setNome(e.target.value)} />
+                onChange={(e) => setNome(e.target.value)}
+                
+              />
 
-              <button className="indexenterbutton" type="submit">Get In</button>
+              < button className="indexenterbutton" type="submit" > Get In</button>
             </form>
 
           </div>
         </div>
-      </div>
+      </div >
 
       <div>
         <Gsc className='indexeasteregg' />

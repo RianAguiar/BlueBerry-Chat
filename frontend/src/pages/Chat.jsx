@@ -1,4 +1,4 @@
-import { Link, useParams} from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
 import { useEffect, useState } from 'react'
 import '../styles/Chat.css'
@@ -7,6 +7,19 @@ export function Chat() {
     const { nome } = useParams();
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([]);
+
+    function handleKeyDown(e) {
+        if (e.key === "Enter") {
+            e.preventDefault();
+
+            if (!message.trim()) {
+                alert("Digite uma mensagem.");
+                return;
+            }
+
+            enviarDados();
+        }
+    }
 
     /* BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) */
     const username = localStorage.getItem('username')
@@ -76,6 +89,7 @@ export function Chat() {
                             value={message}
                             onChange={(e) => setMessage(e.target.value)}
                             placeholder="Digite uma mensagem..."
+                            onKeyDown={handleKeyDown}
                         />
                         <SlArrowRightCircle onClick={enviarDados} />
                     </div>
