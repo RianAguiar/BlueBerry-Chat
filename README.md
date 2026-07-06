@@ -6,7 +6,6 @@ Chat Project to improve my code skills and my stack, where i document all my evo
 # STACK and FEATURES
 Django
 React
-JWT
 PostgreSQL
 Docker
 Redis
