@@ -1,16 +1,19 @@
 from django.urls import path
-from .views import SalaAPIView, MensagensAPIView
+from .views import SalaAPIView, MensagensAPIView, MensagemAPIView
 
 
 urlpatterns = [
 
-    #GET    /api/sala/<nome>/         pegar info da sala
-    #POST   /api/sala/<nome>/         entrar ou criar sala
+    #GET               /api/sala/<nome>/                         pegar info da sala
+    #POST              /api/sala/<nome>/                         entrar ou criar sala
     path("sala/<str:nome>/", SalaAPIView.as_view(), name="Sala"),
     
-    #GET    /api/sala/<nome>/mensagens/     listar mensagens
-    #POST   /api/sala/<nome>/mensagens/     enviar mensagem
+    #GET              /api/sala/<nome>/mensagens/                listar mensagens
+    #POST             /api/sala/<nome>/mensagens/                enviar mensagem
     path("sala/<str:nome>/mensagens/", MensagensAPIView.as_view(), name="Mensagens"),
+
+    #DELETE           /api/sala/<nome>/mensagens/<id>             deletar mensagem
+    path("sala/<str:nome>/mensagens/<int:pk>", MensagemAPIView.as_view(), name="Mensagem"),
 ]
 
 ''' sala exemplo
