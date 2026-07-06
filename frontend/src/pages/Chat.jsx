@@ -1,7 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
 import { IoTrashOutline } from "react-icons/io5";
-
+import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from 'react'
 import '../styles/Chat.css'
 
@@ -92,16 +92,38 @@ export function Chat() {
             <div className="chat-container">
                 <div className="chat-box">
                     <div className="messages">
-                        {messages.map((mensagem) => ( 
-                            <div key={mensagem.id} className="message">
-                                <div className="top">
-                                    <strong>{mensagem.username}</strong>
-                                    <IoTrashOutline onClick={() => excluirMensagem(mensagem.id)} /><br/>
-                                </div>
-                                {mensagem.conteudo}<br />
-                                <small>{mensagem.enviado_as}</small>
-                            </div>
-                        ))}
+                        <AnimatePresence>
+                            {messages.map((mensagem) => (
+                                <motion.div
+                                    key={mensagem.id}
+                                    layout
+                                    className="message"
+                                    initial={{ opacity: 0, y: 0 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    exit={{
+                                        opacity: 0,
+                                        scale: 1,
+                                        height: 0,
+                                        marginBottom: 0,
+                                        transition: {
+                                        duration: 0.1,
+                                        },
+                                    }}
+                                >
+                                    <div className="top">
+                                        <strong>{mensagem.username}</strong>
+                                        <IoTrashOutline
+                                            onClick={() => excluirMensagem(mensagem.id)}
+                                        />
+                                    </div>
+
+                                    {mensagem.conteudo}
+                                    <br />
+
+                                    <small>{mensagem.enviado_as}</small>
+                                </motion.div>
+                            ))}
+                        </AnimatePresence>
                     </div>
 
                     <div className="input-container">
