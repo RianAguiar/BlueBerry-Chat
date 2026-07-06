@@ -13,7 +13,7 @@ urlpatterns = [
     path("sala/<str:nome>/mensagens/", MensagensAPIView.as_view(), name="Mensagens"),
 
     #DELETE           /api/sala/<nome>/mensagens/<id>             deletar mensagem
-    path("sala/<str:nome>/mensagens/<int:pk>", MensagemAPIView.as_view(), name="Mensagem"),
+    path("sala/<str:nome>/mensagens/<int:id>/", MensagemAPIView.as_view(), name="Mensagem"),
 ]
 
 ''' sala exemplo

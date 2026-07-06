@@ -1,5 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
+import { IoTrashOutline } from "react-icons/io5";
+
 import { useEffect, useState } from 'react'
 import '../styles/Chat.css'
 
@@ -65,6 +67,22 @@ export function Chat() {
         catch (erro) { console.error(erro) }
     }
 
+    const excluirMensagem = async (id) => {
+        try {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/${id}/`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            })
+            if (!resposta.ok) {
+                throw new Error("Erro ao excluir mensagem")
+            }
+            // chama a função buscardados novamente para atualizar a pagina
+            BuscarMensagens();
+        }
+
+        catch (erro) { console.error(erro) }
+    }
+
     return (
         <>
             <div className="exit">
@@ -74,9 +92,12 @@ export function Chat() {
             <div className="chat-container">
                 <div className="chat-box">
                     <div className="messages">
-                        {messages.map((mensagem) => (
+                        {messages.map((mensagem) => ( 
                             <div key={mensagem.id} className="message">
-                                <strong>{mensagem.username}</strong><br />
+                                <div className="top">
+                                    <strong>{mensagem.username}</strong>
+                                    <IoTrashOutline onClick={() => excluirMensagem(mensagem.id)} /><br/>
+                                </div>
                                 {mensagem.conteudo}<br />
                                 <small>{mensagem.enviado_as}</small>
                             </div>
