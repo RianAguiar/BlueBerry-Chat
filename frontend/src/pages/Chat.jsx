@@ -1,9 +1,10 @@
-import { Link } from "react-router-dom";
+import { Link, useParams} from "react-router-dom";
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
 import { useEffect, useState } from 'react'
 import '../styles/Chat.css'
 
 export function Chat() {
+    const { nome } = useParams();
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([]);
 
@@ -13,7 +14,7 @@ export function Chat() {
     /* BUSCAR DADOS(MENSAGENS) NA API */
     async function BuscarMensagens() {
         try {
-            const resposta = await fetch('http://127.0.0.1:8000/api/sala/projetochat/mensagens/')
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/`)
 
             if (!resposta.ok) { throw new Error('erro ao buscar mensagens') }
             const dados = await resposta.json();
@@ -27,8 +28,10 @@ export function Chat() {
 
     /* ENVIAR DADOS(MENSAGENS) PARA A API */
     const enviarDados = async () => {
+        if (!message.trim()) return;
+
         try {
-            const resposta = await fetch("http://127.0.0.1:8000/api/sala/projetochat/mensagens/", {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
@@ -42,7 +45,8 @@ export function Chat() {
             }
             const dados = await resposta.json()
             setMessage('')
-            console.log(dados)
+            // chama a função buscardados novamente para atualizar a pagina
+            BuscarMensagens();
         }
 
         catch (erro) { console.error(erro) }

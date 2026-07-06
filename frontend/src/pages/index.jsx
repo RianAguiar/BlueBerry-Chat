@@ -12,15 +12,33 @@ function Index() {
   const [nome, setNome] = useState('')
   const navigate = useNavigate();
 
-  function IrParaSala(e) {
-    localStorage.setItem('username', username)
-    const username = localStorage.getItem('username')
-    e.preventDefault()
-    navigate(`/sala/${nome}`)
-    console.log('user', { username }, 'sended to', { nome })
+  /*ENVIAR URL(NOME DA SALA)DIGITADO NO FORM */
+  async function IrParaSala(e) {
+    e.preventDefault();
 
+    if (!username.trim() || !nome.trim()) {
+      alert("Preencha o nome de usuário e o nome da sala.");
+      return;
+    }
+
+    localStorage.setItem("username", username);
+    const resposta = await fetch(
+      `http://127.0.0.1:8000/api/sala/${nome}/`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username,
+        }),
+      }
+    );
+
+    if (resposta.ok) {
+      navigate(`/sala/${nome}`);
+    }
   }
-
   return (
     <>
       <Link to="/sala/teste">Chat</Link>
