@@ -14,11 +14,11 @@ TDD
 
 # Goals
 database save messages, 
-websocket authentication with jwt, 
+add websocket, 
 make frontend with react, 
 add redis as chennel layer, 
 add celery for async tasks, 
-add docker, 
+add docker and tests, 
 switch from sqlite to postgresql
 
 # installation
@@ -39,7 +39,15 @@ pip install -r requirements.txt
 cd frontend
 npm install
 
-# 4.optionals
+# 4.Run servers
+cd backend
+python manage.py runserver
+(open another terminal)
+# and
+cd frontend
+npm run dev
+
+# 5.optionals
 - SQLite Viewer(VScode extension)
 WebSocket Tester:
 - https://hoppscotch.io/realtime/websocket
