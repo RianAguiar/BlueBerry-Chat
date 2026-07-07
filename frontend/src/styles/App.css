@@ -15,8 +15,12 @@ body{
 }
 
 .avocadochat{
-  padding: 100px;
+  padding: 60px;
 }
 
+.avocadochat img{
+  display: flex;
+  justify-self:center ;
+}
 
 

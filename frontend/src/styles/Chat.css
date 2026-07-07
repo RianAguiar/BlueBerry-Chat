@@ -24,12 +24,12 @@
     padding: 10px;
     max-width: 100%;
     transition: 0.5s;
-    background-color: #3D2850;
+    background-color: #2f0f67;
 }
 
 .message:hover {
     scale: 1.02;
-    background-color: #4b345f;
+    background-color: #3c1979;
 }
 .top{
     display: flex;
@@ -60,7 +60,7 @@
 }
 
 .input-container input {
-    background-color: #3D2850;
+    background-color: #2f0f67;
     flex: 1;
     padding: 10px;
     border-radius: 10px;

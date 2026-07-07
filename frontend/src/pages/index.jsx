@@ -50,7 +50,7 @@ function Index() {
   return (
     <>
 
-      <h1 id='avocadochat' className='avocadochat'>🥑Avocado Chat</h1>
+      <h1 id='avocadochat' className='avocadochat'><img src="public/BlueBerry.png" width='100px'/>BlueBerry Chat</h1>
 
       <div className='indexcontainerdad'>
         <div className='indexcontainer'>
