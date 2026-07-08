@@ -10,7 +10,7 @@ import IndexForm from '../components/IndexForm'
 function Index() {
   const [username, setUsername] = useState('')
   const [nome, setNome] = useState('')
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   function handleKeyDown(e) {
       if (e.key === "Enter") {

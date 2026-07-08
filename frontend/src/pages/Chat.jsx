@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useNavigate } from "react-router-dom";
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
 import { IoTrashOutline } from "react-icons/io5";
 import { AnimatePresence, motion } from "framer-motion";
@@ -8,7 +8,8 @@ import '../styles/Chat.css'
 export function Chat() {
     const { nome } = useParams();
     const [message, setMessage] = useState('')
-    const [messages, setMessages] = useState([]);
+    const [messages, setMessages] = useState([])
+    const navigate = useNavigate()
 
     function handleKeyDown(e) {
         if (e.key === "Enter") {
@@ -67,6 +68,7 @@ export function Chat() {
         catch (erro) { console.error(erro) }
     }
 
+    /* EXCLUIR MENSAGEM */
     const excluirMensagem = async (id) => {
         try {
             const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/${id}/`, {
@@ -83,10 +85,37 @@ export function Chat() {
         catch (erro) { console.error(erro) }
     }
 
+
+    /* EXCLUIR Sala */
+    const excluirSala = async (nome) => {
+        try {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            })
+
+            if (resposta.ok) {
+                navigate(`/`);
+            }
+
+            else {
+                throw new Error("Erro ao excluir sala")
+            }
+        }
+
+        catch (erro) { console.error(erro) }
+    }
+
     return (
         <>
-            <div className="exit">
-                <Link to="/"><SlArrowLeft /></Link>
+            <div className="topfunctions">
+                <div className="exit">
+                    <Link to="/"><SlArrowLeft title="Sair da sala"/></Link>
+                </div>
+
+                <div className="deletarsala">
+                    <IoTrashOutline title="Excluir sala" onClick={() => excluirSala(nome)} />
+                </div>
             </div>
 
             <div className="chat-container">
@@ -106,13 +135,13 @@ export function Chat() {
                                         height: 0,
                                         marginBottom: 0,
                                         transition: {
-                                        duration: 0.1,
+                                            duration: 0.1,
                                         },
                                     }}
                                 >
                                     <div className="top">
                                         <strong>{mensagem.username}</strong>
-                                        <IoTrashOutline
+                                        <IoTrashOutline title="Excluir mensagem"
                                             onClick={() => excluirMensagem(mensagem.id)}
                                         />
                                     </div>
@@ -134,7 +163,7 @@ export function Chat() {
                             placeholder="Digite uma mensagem..."
                             onKeyDown={handleKeyDown}
                         />
-                        <SlArrowRightCircle onClick={enviarDados} />
+                        <SlArrowRightCircle onClick={enviarDados} title="Enviar mensagem"/>
                     </div>
                 </div>
             </div>

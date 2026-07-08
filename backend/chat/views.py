@@ -18,14 +18,21 @@ class SalaAPIView(APIView):
         serializer = SalaSerializer(sala)
         return Response(serializer.data)
     
-#Buscar sala, ver se existe, se existir envia o usuario para essa sala e resgata as mensagens enteriores,
-# se n existir cria automaticamente a sala e envia o usuario para ela
+    #Buscar sala, ver se existe, se existir envia o usuario para essa sala e resgata as mensagens enteriores,
+    # se n existir cria automaticamente a sala e envia o usuario para ela
     def post(self, request, nome):
         sala, criada = Sala.objects.get_or_create(nome=nome)
         return Response({
             "sala": sala.nome,
             "criada": criada,
         })
+    
+    def delete(self, request, nome):
+        sala = get_object_or_404(Sala, nome=nome)
+        sala.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+
 
 class MensagensAPIView(APIView):
     def get(self, request, nome):
@@ -46,6 +53,7 @@ class MensagensAPIView(APIView):
         serializer = MensagemSerializer(mensagem)
         return Response(serializer.data, status=201)
     
+
 
 # poderia fazer a função de delete em "MensagensAPIView" 
 # porem dessa maneira iria ficar desorganizado tornando mais confuso a API

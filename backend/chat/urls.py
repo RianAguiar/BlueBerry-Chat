@@ -6,6 +6,7 @@ urlpatterns = [
 
     #GET               /api/sala/<nome>/                         pegar info da sala
     #POST              /api/sala/<nome>/                         entrar ou criar sala
+    #DELETE            /api/sala/<nome>/                         deletar sala
     path("sala/<str:nome>/", SalaAPIView.as_view(), name="Sala"),
     
     #GET              /api/sala/<nome>/mensagens/                listar mensagens
