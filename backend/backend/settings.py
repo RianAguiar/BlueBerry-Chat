@@ -19,7 +19,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    #'channels',
+    'channels',
     'users',
     'chat',
     # importante instalar o corsheaders pq se n o navegador descarta a resposta da api
