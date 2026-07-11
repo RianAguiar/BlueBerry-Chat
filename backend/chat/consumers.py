@@ -1,8 +1,31 @@
 # views do django channels
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
+from .models import Mensagem
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    from .models import Mensagem
+from channels.db import database_sync_to_async
+
+class ChatConsumer(AsyncWebsocketConsumer):
+
+    @database_sync_to_async
+    def salvar_mensagem(self, sala, username, conteudo, enviado_as):
+        return Mensagem.objects.create(
+            sala=sala,
+            username=username,
+            conteudo=conteudo,
+            enviado_as=enviado_as
+        )
+    
+    @database_sync_to_async
+    def buscar_mensagens(self):
+        return list(
+            Mensagem.objects.filter(sala=self.nome_sala)
+            .order_by("enviado_as")
+            .values("username", "conteudo", "enviado_as")
+        )
+
     async def connect(self):
         # pegando o nome da sala 
         self.nome = self.scope["url_route"]["kwargs"]["nome"]
@@ -15,6 +38,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # o django channel gera automaticamente channel_name diferente para os clientes conectados
         await self.channel_layer.group_add(self.nome_sala, self.channel_name)
         await self.accept()
+        historico = await self.buscar_mensagens()
+        for mensagem in historico:
+            await self.send(text_data=json.dumps(mensagem))
 
     # Sair da sala
     async def disconnect(self, close_code):
@@ -28,22 +54,38 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         # o json.loads converte de json para dicionario python
         text_data_json = json.loads(text_data)
-        mensagem = text_data_json["mensagem"]
+        username = text_data_json["username"]
+        conteudo = text_data_json["conteudo"]
+        enviado_as = text_data_json["enviado_as"]
+
+        await self.salvar_mensagem(
+        self.nome_sala,
+        username,
+        conteudo,
+        enviado_as
+    )
 
         # Envia mensagem para todos da sala
         await self.channel_layer.group_send(
             self.nome_sala, 
             {
-                "type": "chat.mensagem", 
-                "mensagem": mensagem
+                "type" : "chat.mensagem",
+                "sala" : self.nome_sala,
+                "username" : username,
+                "conteudo": conteudo,
+                "enviado_as" : enviado_as
                 })
 
-
-
     async def chat_mensagem(self, event):
-        mensagem = event["mensagem"]
+        username = event["username"]
+        conteudo = event["conteudo"]
+        enviado_as = event["enviado_as"] 
 
         # Enviar mensagem para o websockt
         #o json.dumps() transforma um dicionário python em uma string json
         # o self.send() envia para o cliente conectado
-        await self.send(text_data=json.dumps({"mensagem": mensagem}))
+        await self.send(text_data=json.dumps({
+                "username" : username,
+                "conteudo": conteudo,
+                "enviado_as" : enviado_as
+            }))
