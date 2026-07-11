@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom";
 import { useState } from 'react'
 import '../styles/App.css'
 import Input from '../components/Input'
@@ -14,21 +14,22 @@ function Index() {
 
   function handleKeyDown(e) {
       if (e.key === "Enter") {
-          e.preventDefault()
+          e.preventDefault();
 
           if (!message.trim()) {
-              alert("Digite uma mensagem.")
-              return
+              alert("Digite uma mensagem.");
+              return;
           }
-          enviarDados()
+
+          enviarDados();
       }
   }
 
   /*ENVIAR URL(NOME DA SALA)DIGITADO NO FORM */
   async function IrParaSala(e) {
-    e.preventDefault()
+    e.preventDefault();
 
-    localStorage.setItem("username", username)
+    localStorage.setItem("username", username);
     const resposta = await fetch(
       `http://127.0.0.1:8000/api/sala/${nome}/`,
       {
@@ -40,10 +41,10 @@ function Index() {
           username,
         }),
       }
-    )
+    );
 
     if (resposta.ok) {
-      navigate(`/sala/${nome}`)
+      navigate(`/sala/${nome}`);
     }
   }
   return (

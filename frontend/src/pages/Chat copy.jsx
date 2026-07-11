@@ -1,65 +1,90 @@
-import { Link, useParams, useNavigate } from "react-router-dom"
-import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl"
-import { IoTrashOutline } from "react-icons/io5"
-import { AnimatePresence, motion } from "framer-motion"
-import { useEffect, useState, useRef } from 'react'
+import { Link, useParams, useNavigate } from "react-router-dom";
+import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl";
+import { IoTrashOutline } from "react-icons/io5";
+import { AnimatePresence, motion } from "framer-motion";
+import { useEffect, useState } from 'react'
 import '../styles/Chat.css'
 
 export function Chat() {
-    const { nome } = useParams()
+    const { nome } = useParams();
     const [message, setMessage] = useState('')
     const [messages, setMessages] = useState([])
-    const socketRef = useRef(null)
     const navigate = useNavigate()
 
     function handleKeyDown(e) {
         if (e.key === "Enter") {
-            e.preventDefault()
+            e.preventDefault();
 
             if (!message.trim()) {
-                alert("Digite uma mensagem.")
-                return
+                alert("Digite uma mensagem.");
+                return;
             }
 
-            enviarDados()
+            enviarDados();
         }
     }
 
     /* BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) */
     const username = localStorage.getItem('username')
 
-    useEffect(() => {
-    socketRef.current = new WebSocket(`ws://localhost:8000/ws/sala/${nome}/mensagens/`)
-    socketRef.current.onmessage = (event) => {
-        const data = JSON.parse(event.data)
-      setMessages((prevMessages) => [...prevMessages, event.data])
-    }
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close()
-      }
-    }
-  }, [nome])
+    /* BUSCAR DADOS(MENSAGENS) NA API */
+    async function BuscarMensagens() {
+        try {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/`)
 
-    socketRef.current.onopen = () => {
-        console.log("Conectado!")
+            if (!resposta.ok) { throw new Error('erro ao buscar mensagens') }
+            const dados = await resposta.json();
+            setMessages(dados);
+        }
+        catch (erro) { console.log(erro); }
     }
+    useEffect(() => { BuscarMensagens(); }, [])
 
-    socketRef.current.onclose = () => {
-        console.log("Conexão encerrada")
-    }
+
 
     /* ENVIAR DADOS(MENSAGENS) PARA A API */
-    const sendMessage = () => {
-        if (socketRef.current && message.trim() !== '') {
-        socketRef.current.send(JSON.stringify({
-            username: username,
-            conteudo: message,
-            enviado_as: new Date().toLocaleString()
-        }))
-        setMessage('')
+    const enviarDados = async () => {
+        if (!message.trim()) return;
+
+        try {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    username: username,
+                    conteudo: message,
+                    enviado_as: new Date().toLocaleString()
+                })
+            })
+            if (!resposta.ok) {
+                throw new Error("Erro ao enviar as mensagens")
+            }
+            const dados = await resposta.json()
+            setMessage('')
+            // chama a função buscardados novamente para atualizar a pagina
+            BuscarMensagens();
         }
+
+        catch (erro) { console.error(erro) }
     }
+
+    /* EXCLUIR MENSAGEM */
+    const excluirMensagem = async (id) => {
+        try {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/${id}/`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            })
+            if (!resposta.ok) {
+                throw new Error("Erro ao excluir mensagem")
+            }
+            // chama a função buscardados novamente para atualizar a pagina
+            BuscarMensagens();
+        }
+
+        catch (erro) { console.error(erro) }
+    }
+
 
     /* EXCLUIR Sala */
     const excluirSala = async (nome) => {
@@ -70,7 +95,7 @@ export function Chat() {
             })
 
             if (resposta.ok) {
-                navigate(`/`)
+                navigate(`/`);
             }
 
             else {
@@ -138,7 +163,7 @@ export function Chat() {
                             placeholder="Digite uma mensagem..."
                             onKeyDown={handleKeyDown}
                         />
-                        <SlArrowRightCircle onClick={sendMessage} title="Enviar mensagem"/>
+                        <SlArrowRightCircle onClick={enviarDados} title="Enviar mensagem"/>
                     </div>
                 </div>
             </div>
