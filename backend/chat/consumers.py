@@ -42,7 +42,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
         historico = await self.buscar_mensagens()
         for mensagem in historico:
             mensagem["enviado_as"] = mensagem["enviado_as"].strftime("%d/%m/%Y %H:%M:%S")
-            await self.send(text_data=json.dumps(mensagem))
+            await self.send(text_data=json.dumps({
+            "tipo": "historico",
+            "mensagens": historico
+        }))
+
+
 
     # Sair da sala
     async def disconnect(self, close_code):
@@ -60,7 +65,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
 
-        await self.salvar_mensagem(
+        mensagem = await self.salvar_mensagem(
         self.nome_sala,
         username,
         conteudo,
@@ -72,23 +77,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.nome_sala, 
             {
                 "type" : "chat.mensagem",
-                "sala" : self.nome_sala,
-                "username" : username,
-                "conteudo": conteudo,
-                "enviado_as" : enviado_as
+                "id": mensagem.id,
+                "username" : mensagem.username,
+                "conteudo": mensagem.conteudo,
+                "enviado_as" : mensagem.enviado_as.strftime("%d/%m/%Y %H:%M:%S")
                 })
 
     async def chat_mensagem(self, event):
-        username = event["username"]
-        conteudo = event["conteudo"]
-        enviado_as = event["enviado_as"] 
-        
-
-        # Enviar mensagem para o websockt
-        #o json.dumps() transforma um dicionário python em uma string json
-        # o self.send() envia para o cliente conectado
-        await self.send(text_data=json.dumps({
-                "username" : username,
-                "conteudo": conteudo,
-                "enviado_as" : enviado_as
-            }))
+            # Enviar mensagem para o websockt
+            #o json.dumps() transforma um dicionário python em uma string json
+            # o self.send() envia para o cliente conectado
+        await self.send(
+            text_data=json.dumps({
+                "id": event["id"],
+                "username": event["username"],
+                "conteudo": event["conteudo"],
+                "enviado_as": event["enviado_as"]
+            })
+        )

@@ -12,6 +12,7 @@ export function Chat() {
     const socketRef = useRef(null)
     const navigate = useNavigate()
 
+// Função para poder enviar mensagem usando o "enter"
     function handleKeyDown(e) {
         if (e.key === "Enter") {
             e.preventDefault()
@@ -25,9 +26,12 @@ export function Chat() {
         }
     }
 
-    /* BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) */
+
+//BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) 
     const username = localStorage.getItem('username')
 
+
+//Fazer conexão com o websocket
     useEffect(() => {
         socketRef.current = new WebSocket(
             `ws://localhost:8000/ws/sala/${nome}/mensagens/`
@@ -39,7 +43,12 @@ export function Chat() {
 
         socketRef.current.onmessage = (event) => {
             const data = JSON.parse(event.data)
-            setMessages((prev) => [...prev, data])
+            console.log("Mensagem recebida:", data)
+                if (data.tipo === "historico") {
+            setMessages(data.mensagens)
+            } else {
+                setMessages((prev) => [...prev, data])
+            }
         }
 
         socketRef.current.onclose = () => {
@@ -51,19 +60,8 @@ export function Chat() {
         }
     }, [nome])
 
-    async function BuscarMensagens() {
-        try {
-            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/`)
 
-            if (!resposta.ok) { throw new Error('erro ao buscar mensagens') }
-            const dados = await resposta.json();
-            setMessages(dados);
-        }
-        catch (erro) { console.log(erro); }
-    }
-    useEffect(() => { BuscarMensagens(); }, [])
-    
-    /* ENVIAR DADOS(MENSAGENS) PARA A API */
+//Enviar mensagem
     const sendMessage = () => {
         if (socketRef.current && message.trim() !== '') {
         socketRef.current.send(JSON.stringify({
@@ -75,7 +73,8 @@ export function Chat() {
         }
     }
 
-    /* EXCLUIR Sala */
+
+/* EXCLUIR Sala */
     const excluirSala = async (nome) => {
         try {
             const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/`, {
@@ -95,6 +94,8 @@ export function Chat() {
         catch (erro) { console.error(erro) }
     }
 
+
+//excluir mensagem(mudar para websocket)
     const excluirMensagem = async (id) => {
         try {
             const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/${id}/`, {
