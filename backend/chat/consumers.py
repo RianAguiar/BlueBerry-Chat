@@ -1,7 +1,7 @@
 # views do django channels
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
-from .models import Mensagem
+from .models import Mensagem, Sala
 
 class ChatConsumer(AsyncWebsocketConsumer):
     from .models import Mensagem
@@ -10,7 +10,8 @@ from channels.db import database_sync_to_async
 class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
-    def salvar_mensagem(self, sala, username, conteudo, enviado_as):
+    def salvar_mensagem(self, nome_sala, username, conteudo, enviado_as):
+        sala = Sala.objects.get(nome=nome_sala)
         return Mensagem.objects.create(
             sala=sala,
             username=username,
@@ -21,9 +22,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def buscar_mensagens(self):
         return list(
-            Mensagem.objects.filter(sala=self.nome_sala)
+            Mensagem.objects.filter(sala__nome=self.nome_sala)
             .order_by("enviado_as")
-            .values("username", "conteudo", "enviado_as")
+            .values("id","username", "conteudo", "enviado_as")
         )
 
     async def connect(self):
@@ -40,6 +41,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
         historico = await self.buscar_mensagens()
         for mensagem in historico:
+            mensagem["enviado_as"] = mensagem["enviado_as"].strftime("%d/%m/%Y %H:%M:%S")
             await self.send(text_data=json.dumps(mensagem))
 
     # Sair da sala
@@ -80,6 +82,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = event["username"]
         conteudo = event["conteudo"]
         enviado_as = event["enviado_as"] 
+        
 
         # Enviar mensagem para o websockt
         #o json.dumps() transforma um dicionário python em uma string json
