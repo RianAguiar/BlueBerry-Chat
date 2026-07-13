@@ -44,10 +44,16 @@ export function Chat() {
 
         socketRef.current.onmessage = (event) => {
             const data = JSON.parse(event.data)
-            console.log("Mensagem recebida:", data)
+            console.log("Dado recebido:", data)
             if (data.tipo === "historico") {
                 setMessages(data.mensagens)
-            } else {
+            } 
+            else if (data.type === "delete") {
+                setMessages(prev =>
+                    prev.filter(msg => msg.id !== data.id)
+                )
+            }
+            else {
                 setMessages((prev) => [...prev, data])
             }
         }
@@ -96,21 +102,13 @@ export function Chat() {
     }
 
 
-    //excluir mensagem(mudar para websocket)
-    const excluirMensagem = async (id) => {
-        try {
-            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/${id}/`, {
-                method: "DELETE",
-                headers: { "Content-Type": "application/json" },
-            })
-            if (!resposta.ok) {
-                throw new Error("Erro ao excluir mensagem")
-            }
-
+    //excluir mensagem
+    const excluirMensagem = (id) => {
+        socketRef.current.send(JSON.stringify({
+            type: "delete",
+            id: id,
+        }))
         }
-
-        catch (erro) { console.error(erro) }
-    }
 
     return (
         <>

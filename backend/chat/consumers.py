@@ -3,14 +3,14 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Mensagem, Sala
 from channels.db import database_sync_to_async
-from django.shortcuts import get_object_or_404
+
 
 
 class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
     def delete_mensagem(self, nome, id):
-        mensagem =  Mensagem.objects.filter(sala__nome=nome, id=id)
-        mensagem.delete()
+        Mensagem.objects.filter(sala__nome=nome, id=id).delete()
+        
         
 
     @database_sync_to_async
@@ -49,9 +49,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         historico = await self.buscar_mensagens()
         for mensagem in historico:
             mensagem["enviado_as"] = mensagem["enviado_as"].strftime("%d/%m/%Y %H:%M:%S")
-            await self.send(text_data=json.dumps({
-            "tipo": "historico",
-            "mensagens": historico
+        await self.send(text_data=json.dumps({
+        "tipo": "historico",
+        "mensagens": historico
         }))
 
 
@@ -67,16 +67,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
     conectados ao canal de comunicação'''
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
-        username = text_data_json["username"]
-        conteudo = text_data_json["conteudo"]
-        enviado_as = text_data_json["enviado_as"]
+
 
         if text_data_json.get("type") == "delete":
             await self.delete_mensagem(
                 self.nome_sala,
                 text_data_json["id"]
             )
+
+            await self.channel_layer.group_send(
+                self.nome_sala,
+                {
+                    "type": "chat.delete",
+                    "id": text_data_json["id"]
+                }
+            )
             return
+        
+        username = text_data_json["username"]
+        conteudo = text_data_json["conteudo"]
+        enviado_as = text_data_json["enviado_as"]
 
         mensagem = await self.salvar_mensagem(
             self.nome_sala,
@@ -110,3 +120,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "enviado_as": event["enviado_as"]
             })
         )
+    
+    async def chat_delete(self, event):
+        await self.send(text_data=json.dumps({
+            "type": "delete",
+            "id": event["id"]
+        }))

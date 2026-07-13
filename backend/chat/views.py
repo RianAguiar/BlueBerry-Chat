@@ -32,34 +32,4 @@ class SalaAPIView(APIView):
         sala.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-
-
-class MensagensAPIView(APIView):
-    def get(self, request, nome):
-        sala = Sala.objects.get(nome=nome)
-        mensagens = Mensagem.objects.filter(sala=sala)
-        serializer = MensagemSerializer(mensagens, many=True)
-        return Response(serializer.data)
     
-    def post(self, request, nome):
-        # queryset de buscar(get) se a sala n existir da o erro 404(not found)
-        sala = get_object_or_404(Sala, nome=nome)
-        mensagem = Mensagem.objects.create(
-            sala = sala,
-            username = request.data.get('username'),
-            conteudo = request.data.get('conteudo'),
-            enviado_as = request.data.get('enviado_as'),
-            )
-        serializer = MensagemSerializer(mensagem)
-        return Response(serializer.data, status=201)
-    
-
-
-# poderia fazer a função de delete em "MensagensAPIView" 
-# porem dessa maneira iria ficar desorganizado tornando mais confuso a API
-class MensagemAPIView(APIView):
-    def delete(self, request, nome, id):
-        sala = get_object_or_404(Sala, nome=nome)
-        mensagem = get_object_or_404(Mensagem, sala=sala, id=id)
-        mensagem.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
