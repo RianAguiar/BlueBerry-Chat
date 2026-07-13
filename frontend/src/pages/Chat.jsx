@@ -21,7 +21,7 @@ export function Chat() {
                 return
             }
 
-            enviarDados()
+            sendMessage()
         }
     }
 
@@ -29,26 +29,40 @@ export function Chat() {
     const username = localStorage.getItem('username')
 
     useEffect(() => {
-    socketRef.current = new WebSocket(`ws://localhost:8000/ws/sala/${nome}/mensagens/`)
-    socketRef.current.onmessage = (event) => {
-        const data = JSON.parse(event.data)
-      setMessages((prevMessages) => [...prevMessages, event.data])
-    }
-    return () => {
-      if (socketRef.current) {
-        socketRef.current.close()
-      }
-    }
-  }, [nome])
+        socketRef.current = new WebSocket(
+            `ws://localhost:8000/ws/sala/${nome}/mensagens/`
+        )
 
-    socketRef.current.onopen = () => {
-        console.log("Conectado!")
-    }
+        socketRef.current.onopen = () => {
+            console.log("Conectado!")
+        }
 
-    socketRef.current.onclose = () => {
-        console.log("Conexão encerrada")
-    }
+        socketRef.current.onmessage = (event) => {
+            const data = JSON.parse(event.data)
+            setMessages((prev) => [...prev, data])
+        }
 
+        socketRef.current.onclose = () => {
+            console.log("Conexão encerrada")
+        }
+
+        return () => {
+            socketRef.current?.close()
+        }
+    }, [nome])
+
+    async function BuscarMensagens() {
+        try {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/`)
+
+            if (!resposta.ok) { throw new Error('erro ao buscar mensagens') }
+            const dados = await resposta.json();
+            setMessages(dados);
+        }
+        catch (erro) { console.log(erro); }
+    }
+    useEffect(() => { BuscarMensagens(); }, [])
+    
     /* ENVIAR DADOS(MENSAGENS) PARA A API */
     const sendMessage = () => {
         if (socketRef.current && message.trim() !== '') {
@@ -76,6 +90,21 @@ export function Chat() {
             else {
                 throw new Error("Erro ao excluir sala")
             }
+        }
+
+        catch (erro) { console.error(erro) }
+    }
+
+    const excluirMensagem = async (id) => {
+        try {
+            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/${id}/`, {
+                method: "DELETE",
+                headers: { "Content-Type": "application/json" },
+            })
+            if (!resposta.ok) {
+                throw new Error("Erro ao excluir mensagem")
+            }
+            
         }
 
         catch (erro) { console.error(erro) }
