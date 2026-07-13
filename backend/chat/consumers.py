@@ -2,12 +2,16 @@
 import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Mensagem, Sala
-
-class ChatConsumer(AsyncWebsocketConsumer):
-    from .models import Mensagem
 from channels.db import database_sync_to_async
+from django.shortcuts import get_object_or_404
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
+    @database_sync_to_async
+    def delete_mensagem(self, nome, id):
+        mensagem =  Mensagem.objects.filter(sala__nome=nome, id=id)
+        mensagem.delete()
+        
 
     @database_sync_to_async
     def salvar_mensagem(self, nome_sala, username, conteudo, enviado_as):
@@ -26,6 +30,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             .order_by("enviado_as")
             .values("id","username", "conteudo", "enviado_as")
         )
+
+
+
 
     async def connect(self):
         # pegando o nome da sala 
@@ -59,29 +66,37 @@ class ChatConsumer(AsyncWebsocketConsumer):
     onde ele pega a mensagem enviada pelo navegador e distribui essa mensagem para todos os usuarios
     conectados ao canal de comunicação'''
     async def receive(self, text_data):
-        # o json.loads converte de json para dicionario python
         text_data_json = json.loads(text_data)
         username = text_data_json["username"]
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
 
-        mensagem = await self.salvar_mensagem(
-        self.nome_sala,
-        username,
-        conteudo,
-        enviado_as
-    )
+        if text_data_json.get("type") == "delete":
+            await self.delete_mensagem(
+                self.nome_sala,
+                text_data_json["id"]
+            )
+            return
 
-        # Envia mensagem para todos da sala
+        mensagem = await self.salvar_mensagem(
+            self.nome_sala,
+            username,
+            conteudo,
+            enviado_as
+        )
+
         await self.channel_layer.group_send(
-            self.nome_sala, 
+            self.nome_sala,
             {
-                "type" : "chat.mensagem",
+                "type": "chat.mensagem",
                 "id": mensagem.id,
-                "username" : mensagem.username,
+                "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
-                "enviado_as" : mensagem.enviado_as.strftime("%d/%m/%Y %H:%M:%S")
-                })
+                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M:%S")
+            }
+        )
+
+
 
     async def chat_mensagem(self, event):
             # Enviar mensagem para o websockt

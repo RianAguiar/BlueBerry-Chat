@@ -63,15 +63,3 @@ class MensagemAPIView(APIView):
         mensagem = get_object_or_404(Mensagem, sala=sala, id=id)
         mensagem.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-''' Json para teste
-
-{
-    "username": "joao",
-    "conteudo": "Olá, pessoal!",
-    "enviado_as": "2026-07-03T22:30:00Z"
-}
-
-'''
