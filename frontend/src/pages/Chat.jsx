@@ -4,20 +4,21 @@ import { IoTrashOutline } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
 import '../styles/Chat.css'
+import Input from "../components/Input"
 
 export function Chat() {
     const { nome } = useParams()
-    const [message, setMessage] = useState('')
+    const [inputc, setInputc] = useState('')
     const [messages, setMessages] = useState([])
     const socketRef = useRef(null)
     const navigate = useNavigate()
 
-// Função para poder enviar mensagem usando o "enter"
+    // Função para poder enviar mensagem usando o "enter"
     function handleKeyDown(e) {
         if (e.key === "Enter") {
             e.preventDefault()
 
-            if (!message.trim()) {
+            if (!inputc.trim()) {
                 alert("Digite uma mensagem.")
                 return
             }
@@ -27,11 +28,11 @@ export function Chat() {
     }
 
 
-//BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) 
+    //BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) 
     const username = localStorage.getItem('username')
 
 
-//Fazer conexão com o websocket
+    //Fazer conexão com o websocket
     useEffect(() => {
         socketRef.current = new WebSocket(
             `ws://localhost:8000/ws/sala/${nome}/mensagens/`
@@ -44,8 +45,8 @@ export function Chat() {
         socketRef.current.onmessage = (event) => {
             const data = JSON.parse(event.data)
             console.log("Mensagem recebida:", data)
-                if (data.tipo === "historico") {
-            setMessages(data.mensagens)
+            if (data.tipo === "historico") {
+                setMessages(data.mensagens)
             } else {
                 setMessages((prev) => [...prev, data])
             }
@@ -61,20 +62,20 @@ export function Chat() {
     }, [nome])
 
 
-//Enviar mensagem
+    //Enviar mensagem
     const sendMessage = () => {
-        if (socketRef.current && message.trim() !== '') {
-        socketRef.current.send(JSON.stringify({
-            username: username,
-            conteudo: message,
-            enviado_as: new Date().toLocaleString()
-        }))
-        setMessage('')
+        if (socketRef.current && inputc.trim() !== '') {
+            socketRef.current.send(JSON.stringify({
+                username: username,
+                conteudo: inputc,
+                enviado_as: new Date().toLocaleString()
+            }))
+            setInputc('')
         }
     }
 
 
-/* EXCLUIR Sala */
+    /* EXCLUIR Sala */
     const excluirSala = async (nome) => {
         try {
             const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/`, {
@@ -95,7 +96,7 @@ export function Chat() {
     }
 
 
-//excluir mensagem(mudar para websocket)
+    //excluir mensagem(mudar para websocket)
     const excluirMensagem = async (id) => {
         try {
             const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/mensagens/${id}/`, {
@@ -105,7 +106,7 @@ export function Chat() {
             if (!resposta.ok) {
                 throw new Error("Erro ao excluir mensagem")
             }
-            
+
         }
 
         catch (erro) { console.error(erro) }
@@ -115,7 +116,7 @@ export function Chat() {
         <>
             <div className="topfunctions">
                 <div className="exit">
-                    <Link to="/"><SlArrowLeft title="Sair da sala"/></Link>
+                    <Link to="/"><SlArrowLeft title="Sair da sala" /></Link>
                 </div>
 
                 <div className="deletarsala">
@@ -163,12 +164,12 @@ export function Chat() {
                     <div className="input-container">
                         <input
                             type="text"
-                            value={message}
-                            onChange={(e) => setMessage(e.target.value)}
+                            value={inputc}
+                            onChange={(e) => setInputc(e.target.value)}
                             placeholder="Digite uma mensagem..."
                             onKeyDown={handleKeyDown}
                         />
-                        <SlArrowRightCircle onClick={sendMessage} title="Enviar mensagem"/>
+                        <SlArrowRightCircle onClick={sendMessage} title="Enviar mensagem" />
                     </div>
                 </div>
             </div>
