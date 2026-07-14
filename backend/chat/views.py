@@ -1,11 +1,9 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Mensagem, Sala
-from .serializers import MensagemSerializer, SalaSerializer
+from .models import Sala
+from .serializers import SalaSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
-
-
 
 # apenas para consulta
 class SalaAPIView(APIView):

@@ -1,3 +1,3 @@
 from django.contrib import admin
-from .models import Mensagem, Sala
+from .models import Sala
 

@@ -6,9 +6,3 @@ class SalaSerializer(serializers.ModelSerializer):
         model = Sala
         fields = '__all__'
         
-class MensagemSerializer(serializers.ModelSerializer):
-    enviado_as = serializers.DateTimeField(format="%d/%m/%Y %H:%M")
-    class Meta:
-        model = Mensagem
-        fields = '__all__'
-        read_only_fields = ['enviado_as']

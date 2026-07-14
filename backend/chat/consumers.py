@@ -4,9 +4,9 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Mensagem, Sala
 from channels.db import database_sync_to_async
 
-
-
 class ChatConsumer(AsyncWebsocketConsumer):
+
+#------------------- FUNÇÕES QUE ACESSAM O BANCO DE DADOS----------------------------
     @database_sync_to_async
     def delete_mensagem(self, nome, id):
         Mensagem.objects.filter(sala__nome=nome, id=id).delete()
@@ -30,9 +30,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             .order_by("enviado_as")
             .values("id","username", "conteudo", "enviado_as")
         )
+    
+#------------------------------------------------------------------------------------
 
 
 
+#--------------------------- FUNÇÕES WEBSOCKETS--------------------------------------
 
     async def connect(self):
         # pegando o nome da sala 
@@ -102,7 +105,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "id": mensagem.id,
                 "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
-                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M:%S")
+                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M")
             }
         )
 
@@ -126,3 +129,5 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "type": "delete",
             "id": event["id"]
         }))
+
+#------------------------------------------------------------------------------------

@@ -4,6 +4,7 @@ import { IoTrashOutline } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
 import { handleEnterKey } from "../components/handleEnterKey"
+import pop from "../components/pop"
 import '../styles/Chat.css'
 
 export function Chat() {
@@ -15,7 +16,7 @@ export function Chat() {
 
     // Função para poder enviar mensagem usando o "enter"
     function handleKeyDown(e) {
-    handleEnterKey(e, inputc, sendMessage);
+    handleEnterKey(e, inputc, sendMessage)
     }
 
 
@@ -68,6 +69,7 @@ export function Chat() {
                 enviado_as: new Date().toLocaleString()
             }))
             setInputc('')
+            pop()
         }
     }
 
