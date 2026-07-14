@@ -3,8 +3,8 @@ import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl"
 import { IoTrashOutline } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
+import { handleEnterKey } from "../components/handleEnterKey"
 import '../styles/Chat.css'
-import Input from "../components/Input"
 
 export function Chat() {
     const { nome } = useParams()
@@ -15,16 +15,7 @@ export function Chat() {
 
     // Função para poder enviar mensagem usando o "enter"
     function handleKeyDown(e) {
-        if (e.key === "Enter") {
-            e.preventDefault()
-
-            if (!inputc.trim()) {
-                alert("Digite uma mensagem.")
-                return
-            }
-
-            sendMessage()
-        }
+    handleEnterKey(e, inputc, sendMessage);
     }
 
 
@@ -47,7 +38,7 @@ export function Chat() {
             console.log("Dado recebido:", data)
             if (data.tipo === "historico") {
                 setMessages(data.mensagens)
-            } 
+            }
             else if (data.type === "delete") {
                 setMessages(prev =>
                     prev.filter(msg => msg.id !== data.id)
@@ -108,7 +99,7 @@ export function Chat() {
             type: "delete",
             id: id,
         }))
-        }
+    }
 
     return (
         <>
@@ -167,6 +158,7 @@ export function Chat() {
                             placeholder="Digite uma mensagem..."
                             onKeyDown={handleKeyDown}
                         />
+
                         <SlArrowRightCircle onClick={sendMessage} title="Enviar mensagem" />
                     </div>
                 </div>

@@ -1,10 +1,7 @@
 import { Link, useNavigate } from "react-router-dom"
 import { useState } from 'react'
-import '../styles/App.css'
-import Input from '../components/Input'
-import Button from '../components/Button'
 import Gsc from '../components/Gsc'
-import IndexForm from '../components/IndexForm'
+import '../styles/index.css'
 
 
 function Index() {
@@ -49,7 +46,7 @@ function Index() {
   return (
     <>
 
-      <h1 id='avocadochat' className='avocadochat'><img src="public/BlueBerry.png" width='100px'/>BlueBerry Chat</h1>
+      <h1 id='avocadochat' className='avocadochat'><img src="/BlueBerry.png" width='100px'/>BlueBerry Chat</h1>
 
       <div className='indexcontainerdad'>
         <div className='indexcontainer'>

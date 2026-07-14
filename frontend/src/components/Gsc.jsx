@@ -15,4 +15,4 @@ function Gsc(props) {
     )
 }
 
-export default Gsc;
+export default Gsc

@@ -1,5 +1,3 @@
-
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   color: rgb(238, 240, 214);
@@ -7,6 +5,12 @@ body {
   background: #3D2850;
   background: radial-gradient(at right top, #351174, #010101);
   transition: all 0.5s;
+}
+
+h1 {
+  font-size: 56px;
+  letter-spacing: -1.68px;
+  margin: 32px 0;
 }
 
 #root {
@@ -20,28 +24,69 @@ body {
   box-sizing: border-box;
 }
 
-
-h1, h2 {
-  font-weight: 500;
-  color: var(--text-h);
+.indexcontainer{
+  width: 190px;
+  
 }
 
-h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-
-}
-h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-
-}
-p {
-  margin: 0;
+.indexcontainerdad{
+  display: flex;
+  justify-content: center; 
+  align-items: center;     
+  
 }
 
+.avocadochat{
+  padding: 60px;
+}
 
+.avocadochat img{
+  display: flex;
+  justify-self:center ;
+}
 
+.indexinput{
+  background-color: rgba(0, 0, 0, 0.100);
+  margin: 1px;
+  padding: 10px;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: rgb(238, 240, 214);
+  border-width: 1px;
+  width: 100%;
+  box-sizing: border-box
+}
+
+.indexinput::placeholder{
+  color: rgb(238, 240, 214);
+}
+
+.indexenterbutton{
+  background-color: rgba(0, 0, 0, 0.100);
+  color: rgb(238, 240, 214);
+  margin: 1px;
+  padding: 10px 73px;
+  border-radius: 6px;
+  border-style: solid;
+  border-color: rgb(238, 240, 214);
+  border-width: 1px;
+  width: 100%;
+}
+
+.indexenterbutton{
+  transition: 0.5s;
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+  border-radius: 5px;
+
+}
+
+.indexenterbutton:hover{
+  transition: 0.5s;
+  color: rgb(255, 255, 255);
+  background-color: rgba(255, 255, 255, 0.200);
+  border-style: solid;
+  border-width: 1px 1px 1px 1px;
+  border-radius: 5px;
+
+}
