@@ -3,23 +3,17 @@ My project consists of a practical, anonymous chat system that requires no accou
 
 Chat Project to improve my code skills and my stack, where i document all my evolution and project's progress
 
-# STACK and FEATURES
-Django
-React
-PostgreSQL
-Docker
-Redis
-Celery
-TDD
-
-# Goals
-database save messages, 
-add websocket, 
-make frontend with react, 
-add redis as chennel layer, 
-add celery for async tasks, 
-add docker and tests, 
-switch from sqlite to postgresql
+# STACK
+- Django Rest Framework
+- Django Channels
+- Websocket
+- React
+- SQLite
+- PostgreSQL (soon)
+- Docker (soon)
+- Redis (soon)
+- Celery (soon)
+- TDD (soon)
 
 # installation
 # 1. Make the Virtual Environment
