@@ -10,5 +10,7 @@ class Mensagem(models.Model):
     username = models.CharField(max_length=50)
     conteudo = models.TextField()
     enviado_as = models.DateTimeField(auto_now_add=True)
+    resposta = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="respostas")
     def __str__(self):
         return f'{self.username} : {self.conteudo}'
+    

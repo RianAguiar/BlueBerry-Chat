@@ -13,13 +13,19 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
 
     @database_sync_to_async
-    def save_message(self, nome_sala, username, conteudo, enviado_as):
+    def save_message(self, nome_sala, username, conteudo, enviado_as, resposta):
         sala = Sala.objects.get(nome=nome_sala)
+
+        resposta_obj = None
+        if resposta:
+            resposta_obj = Mensagem.objects.get(id=resposta)
+
         return Mensagem.objects.create(
             sala=sala,
-            username=username,
+            username=username,  
             conteudo=conteudo,
-            enviado_as=enviado_as
+            enviado_as=enviado_as,
+            resposta=resposta_obj
         )
     
     @database_sync_to_async
@@ -27,7 +33,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         return list(
             Mensagem.objects.filter(sala__nome=self.nome_sala)
             .order_by("enviado_as")
-            .values("id","username", "conteudo", "enviado_as")
+            .values("id","username", "conteudo", "enviado_as", "resposta")
         )
     
 #------------------------------------------------------------------------------------
@@ -91,12 +97,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
         username = text_data_json["username"]
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
+        resposta = text_data_json["resposta"]
 
         mensagem = await self.save_message(
             self.nome_sala,
             username,
             conteudo,
-            enviado_as
+            enviado_as,
+            resposta
         )
 
 
@@ -109,7 +117,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "id": mensagem.id,
                 "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
-                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M")
+                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
+                "resposta": mensagem.resposta_id
             }
         )
 
@@ -124,7 +133,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "id": event["id"],
                 "username": event["username"],
                 "conteudo": event["conteudo"],
-                "enviado_as": event["enviado_as"]
+                "enviado_as": event["enviado_as"],
+                "resposta": event["resposta"]
             })
         )
     
