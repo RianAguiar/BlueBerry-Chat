@@ -7,7 +7,7 @@ from channels.db import database_sync_to_async
 class ChatConsumer(AsyncWebsocketConsumer):
 #------------------- FUNÇÕES QUE ACESSAM O BANCO DE DADOS----------------------------
     @database_sync_to_async
-    def delete_message(self, nome, id):
+    def delete_message_db(self, nome, id):
         Mensagem.objects.filter(sala__nome=nome, id=id).delete()
         
         
@@ -74,15 +74,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
         if text_data_json.get("type") == "delete":
-            await self.delete_message(
+            await self.delete_message_db(
                 self.nome_sala,
                 text_data_json["id"]
             )
-
             await self.channel_layer.group_send(
                 self.nome_sala,
                 {
-                    "type": "chat.delete",
+                    "type": "delete.message",
                     "id": text_data_json["id"]
                 }
             )

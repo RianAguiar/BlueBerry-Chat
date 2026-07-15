@@ -1,5 +1,6 @@
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl"
+import { LuReply } from "react-icons/lu"
 import { IoTrashOutline } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
@@ -68,8 +69,9 @@ export function Chat() {
                 conteudo: inputc,
                 enviado_as: new Date().toLocaleString()
             }))
-            setInputc('')
             pop()
+            setInputc('')
+            
         }
     }
 
@@ -138,7 +140,8 @@ export function Chat() {
                                 >
                                     <div className="top">
                                         <strong>{mensagem.username}</strong>
-                                        <IoTrashOutline title="Excluir mensagem"
+                                        <LuReply className="reply" />
+                                        <IoTrashOutline className="trash" title="Excluir mensagem"
                                             onClick={() => excluirMensagem(mensagem.id)}
                                         />
                                     </div>
