@@ -1,7 +1,7 @@
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl"
 import { LuReply } from "react-icons/lu"
-import { IoTrashOutline } from "react-icons/io5"
+import { IoTrashOutline, IoArrowBack } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
 import { handleEnterKey } from "../components/handleEnterKey"
@@ -147,8 +147,7 @@ export function Chat() {
                                         <div className="reply-preview">
                                             <strong>Respondendo a {reply.username}</strong>
                                             <p>{reply.conteudo}</p>
-
-                                            <button onClick={() => setReplyTo(null)}> ✕ </button>
+                                            <IoArrowBack onClick={() => setReplyTo(null)}/>
                                         </div>
                                     )}
                                     <div className="top">
