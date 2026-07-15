@@ -10,7 +10,12 @@ body {
 h1 {
   font-size: 56px;
   letter-spacing: -1.68px;
-  margin: 32px 0;
+  margin: 0px 0;
+}
+
+p{
+  margin: 0px;
+  margin-bottom: 90px;
 }
 
 #root {
@@ -37,7 +42,7 @@ h1 {
 }
 
 .avocadochat{
-  padding: 60px;
+  padding-top: 60px;
 }
 
 .avocadochat img{
@@ -47,6 +52,7 @@ h1 {
 
 .indexinput{
   background-color: rgba(0, 0, 0, 0.100);
+  color: white;
   margin: 1px;
   padding: 10px;
   border-radius: 6px;
@@ -62,13 +68,13 @@ h1 {
 }
 
 .indexenterbutton{
-  background-color: rgba(0, 0, 0, 0.100);
+  background-color: #2b0d5e;
   color: rgb(238, 240, 214);
   margin: 1px;
   padding: 10px 73px;
   border-radius: 6px;
   border-style: solid;
-  border-color: rgb(238, 240, 214);
+  border-color: #5d00ff;
   border-width: 1px;
   width: 100%;
 }
@@ -84,9 +90,12 @@ h1 {
 .indexenterbutton:hover{
   transition: 0.5s;
   color: rgb(255, 255, 255);
-  background-color: rgba(255, 255, 255, 0.200);
+  background-color: #5d00ff;
+  border-color: #ffffff;
   border-style: solid;
   border-width: 1px 1px 1px 1px;
   border-radius: 5px;
+  box-shadow: 1px 1px 10px 1px #ffffff2c;
+  
 
 }

@@ -47,6 +47,7 @@ function Index() {
     <>
 
       <h1 id='avocadochat' className='avocadochat'><img src="/BlueBerry.png" width='100px'/>BlueBerry Chat</h1>
+      <p>Anonymous real-time chat. Create or join a room instantly — no account required</p>
 
       <div className='indexcontainerdad'>
         <div className='indexcontainer'>

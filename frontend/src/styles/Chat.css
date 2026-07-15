@@ -60,6 +60,7 @@
 }
 
 .input-container input {
+    color: white;
     background-color: #2f0f67;
     flex: 1;
     padding: 10px;
