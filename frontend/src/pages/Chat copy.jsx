@@ -12,7 +12,6 @@ export function Chat() {
     const { nome } = useParams()
     const [inputc, setInputc] = useState('')
     const [messages, setMessages] = useState([])
-    const [reply, setReply] = useState(null)
     const socketRef = useRef(null)
     const navigate = useNavigate()
 
@@ -69,8 +68,7 @@ export function Chat() {
             socketRef.current.send(JSON.stringify({
                 username: username,
                 conteudo: inputc,
-                enviado_as: new Date().toLocaleString(),
-                reply: reply?.id ?? null,
+                enviado_as: new Date().toLocaleString()
             }))
             pop()
             setInputc('')
@@ -78,7 +76,6 @@ export function Chat() {
         }
     }
 
-    const handleReply = (message) => { setReply(message) }
 
 
     /* EXCLUIR Sala */
@@ -143,14 +140,7 @@ export function Chat() {
                                         },
                                     }}
                                 >
-                                    {reply && (
-                                        <div className="reply-preview">
-                                            <strong>Respondendo a {reply.username}</strong>
-                                            <p>{reply.conteudo}</p>
 
-                                            <button onClick={() => setReplyTo(null)}> ✕ </button>
-                                        </div>
-                                    )}
                                     <div className="top">
                                         <strong>{mensagem.username}</strong>
                                         <LuReply className="reply" onClick={() => handleReply(mensagem)} />
