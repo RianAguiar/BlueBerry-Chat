@@ -5,16 +5,15 @@ from .models import Mensagem, Sala
 from channels.db import database_sync_to_async
 
 class ChatConsumer(AsyncWebsocketConsumer):
-
 #------------------- FUNÇÕES QUE ACESSAM O BANCO DE DADOS----------------------------
     @database_sync_to_async
-    def delete_mensagem(self, nome, id):
+    def delete_message(self, nome, id):
         Mensagem.objects.filter(sala__nome=nome, id=id).delete()
         
         
 
     @database_sync_to_async
-    def salvar_mensagem(self, nome_sala, username, conteudo, enviado_as):
+    def save_message(self, nome_sala, username, conteudo, enviado_as):
         sala = Sala.objects.get(nome=nome_sala)
         return Mensagem.objects.create(
             sala=sala,
@@ -24,7 +23,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
     
     @database_sync_to_async
-    def buscar_mensagens(self):
+    def search_message(self):
         return list(
             Mensagem.objects.filter(sala__nome=self.nome_sala)
             .order_by("enviado_as")
@@ -38,20 +37,21 @@ class ChatConsumer(AsyncWebsocketConsumer):
 #--------------------------- FUNÇÕES WEBSOCKETS--------------------------------------
 
     async def connect(self):
-        # pegando o nome da sala 
+        # pegando o nome da sala apartir da url
         self.nome = self.scope["url_route"]["kwargs"]["nome"]
-        # criando o nome da sala
-        self.nome_sala = f"{self.nome}"
+        self.nome_sala = self.nome
         
 
         # Entrar na sala(o django channels chama de grupo)
-        # o "channel_layer" permite que os usuarios se mantenham no mesmo canal de comunicação
+        # O channel_layer é um sistema de comunicação entre consumidores.
+        # O channel_layer permite que mensagens sejam enviadas para todos
+        # os consumidores pertencentes ao mesmo grupo "channel_layer" permite que os usuarios se mantenham no mesmo canal de comunicação
         # o django channel gera automaticamente channel_name diferente para os clientes conectados
         await self.channel_layer.group_add(self.nome_sala, self.channel_name)
         await self.accept()
-        historico = await self.buscar_mensagens()
+        historico = await self.search_message()
         for mensagem in historico:
-            mensagem["enviado_as"] = mensagem["enviado_as"].strftime("%d/%m/%Y %H:%M:%S")
+            mensagem["enviado_as"] = mensagem["enviado_as"].strftime("%d/%m/%Y %H:%M")
         await self.send(text_data=json.dumps({
         "tipo": "historico",
         "mensagens": historico
@@ -65,15 +65,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 
-    ''' esse método é chamado automaticamente sempre que o cliente envia uma mensagem pelo WebSocket,
-    onde ele pega a mensagem enviada pelo navegador e distribui essa mensagem para todos os usuarios
-    conectados ao canal de comunicação'''
+    """
+    Recebe todas as mensagens enviadas pelo cliente via WebSocket
+    e executa a ação correspondente à requisição
+    """
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
 
 
         if text_data_json.get("type") == "delete":
-            await self.delete_mensagem(
+            await self.delete_message(
                 self.nome_sala,
                 text_data_json["id"]
             )
@@ -85,23 +86,27 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "id": text_data_json["id"]
                 }
             )
+            
             return
         
         username = text_data_json["username"]
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
 
-        mensagem = await self.salvar_mensagem(
+        mensagem = await self.save_message(
             self.nome_sala,
             username,
             conteudo,
             enviado_as
         )
 
+
+        # envia o evento para todos os usuários conectados à sala
+        # campo "type" determina qual método será executado em cada usuario
         await self.channel_layer.group_send(
             self.nome_sala,
             {
-                "type": "chat.mensagem",
+                "type": "send.message",
                 "id": mensagem.id,
                 "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
@@ -111,8 +116,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 
-    async def chat_mensagem(self, event):
-            # Enviar mensagem para o websockt
+    async def send_message(self, event):
+            # envia a mensagem para o cliente conectado via websocket
             #o json.dumps() transforma um dicionário python em uma string json
             # o self.send() envia para o cliente conectado
         await self.send(
@@ -124,7 +129,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
             })
         )
     
-    async def chat_delete(self, event):
+    async def delete_message(self, event):
         await self.send(text_data=json.dumps({
             "type": "delete",
             "id": event["id"]
