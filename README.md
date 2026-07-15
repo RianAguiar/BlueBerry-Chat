@@ -9,9 +9,9 @@ Chat Project to improve my code skills and my stack, where i document all my evo
 - Websocket
 - React
 - SQLite
+- Docker
+- Redis
 - PostgreSQL (soon)
-- Docker (soon)
-- Redis (soon)
 - Celery (soon)
 - TDD (soon)
 
