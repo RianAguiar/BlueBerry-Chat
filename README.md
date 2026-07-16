@@ -5,12 +5,12 @@ Chat Project to improve my code skills and my stack, where i document all my evo
 
 # INDEX PAGE
 <p align="center">
-  <img src="frontend/Documentation/IndexPage.png" width="350px" />
+  <img src="frontend/Documentation/IndexPage.png" width="1000px" />
 </p>
 
 # CHAT PAGE
 <p align="center">
-  <img src="frontend/Documentation/ChatPage.png" width="350px" />
+  <img src="frontend/Documentation/ChatPage.png" width="1000px" />
 </p>
 
 # STACK
