@@ -156,7 +156,11 @@ export function Chat() {
                                     {mensagem.resposta && (
                                         <div className="reply-message">
                                             <small>Replying: {mensagem.resposta.username} : </small>
-                                            <small>{mensagem.resposta.conteudo}</small>
+                                            <small>
+                                                {mensagem.resposta.conteudo.slice(0, 30)}
+                                                {mensagem.resposta.conteudo.length > 30 && "..."}
+                                            </small>
+                                            
                                         </div>
                                     )}
                                     <div className="top">
@@ -167,9 +171,7 @@ export function Chat() {
                                             onClick={() => excluirMensagem(mensagem.id)}
                                         />
                                     </div>
-
-                                    {mensagem.conteudo}
-                                    <br />
+                                    <p>{mensagem.conteudo}</p>
 
                                     <small>{mensagem.enviado_as}</small>
                                 </motion.div>

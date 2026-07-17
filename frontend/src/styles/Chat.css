@@ -136,6 +136,7 @@ p{
     border-radius: 6px;
     padding: 2px;
     background-color: #5220a9;
+    
 }
 
 .topfunctions{
@@ -160,3 +161,10 @@ p{
 .chat-n-username h4{
     margin: 0px;
 }
+
+.messages p {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    white-space: pre-wrap;
+}
+
