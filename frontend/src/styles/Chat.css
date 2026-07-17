@@ -5,6 +5,7 @@ p{
     min-height: 100vh;
     display: flex;
     justify-content: center;
+    padding-top: 70px;
 }
 
 .chat-box {
@@ -103,10 +104,9 @@ p{
 }
 
 .exit svg{
-    position: fixed;
+    
     color: white;
-    margin-top: 50px;
-    display: flex;
+    margin-top: 0px;
     align-self: center;
     width: 30px;
     height: 30px;
@@ -119,11 +119,8 @@ p{
 }
 
 .deletarsala svg{
-    position: fixed;
     color: white;
-    margin-top: 60px;
-    display: flex;
-    justify-self: end;
+    
     align-self: center;
     width: 30px;
     height: 30px;
@@ -139,4 +136,27 @@ p{
     border-radius: 6px;
     padding: 2px;
     background-color: #5220a9;
+}
+
+.topfunctions{
+    backdrop-filter: blur(10px);
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 70px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 0px;
+    z-index: 1000;
+  
+}
+
+.chat-n-username h5{
+    margin: 0px;
+}
+
+.chat-n-username h4{
+    margin: 0px;
 }

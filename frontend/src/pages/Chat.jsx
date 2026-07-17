@@ -113,15 +113,22 @@ export function Chat() {
 
     return (
         <>
+
             <div className="topfunctions">
                 <div className="exit">
-                    <Link to="/"><SlArrowLeft title="Sair da sala" /></Link>
+                    <Link to="/"><SlArrowLeft title="Exit chat room" /></Link>
+                </div>
+
+                <div className="chat-n-username">
+                    <h4 title="Chat room ">{nome}</h4>
+                    <h5 title="Your username">{username}</h5>
                 </div>
 
                 <div className="deletarsala">
-                    <IoTrashOutline title="Excluir sala" onClick={() => excluirSala(nome)} />
+                    <IoTrashOutline title="Delete chat room" onClick={() => excluirSala(nome)} />
                 </div>
             </div>
+
 
             <div className="chat-container">
                 <div className="chat-box">
@@ -155,8 +162,8 @@ export function Chat() {
                                     <div className="top">
                                         
                                         <strong>{mensagem.username}</strong>
-                                        <LuReply className="reply" onClick={() => handleReply(mensagem)} />
-                                        <IoTrashOutline className="trash" title="Excluir mensagem"
+                                        <LuReply className="reply" title="Reply message" onClick={() => handleReply(mensagem)} />
+                                        <IoTrashOutline className="trash" title="Delete message"
                                             onClick={() => excluirMensagem(mensagem.id)}
                                         />
                                     </div>
@@ -187,7 +194,7 @@ export function Chat() {
                             onKeyDown={handleKeyDown}
                         />
 
-                        <SlArrowRightCircle onClick={sendMessage} title="Enviar mensagem" />
+                        <SlArrowRightCircle onClick={sendMessage} title="Send message" />
                     </div>
                 </div>
             </div>
