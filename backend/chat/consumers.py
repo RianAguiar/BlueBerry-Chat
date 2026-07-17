@@ -30,11 +30,34 @@ class ChatConsumer(AsyncWebsocketConsumer):
     
     @database_sync_to_async
     def search_message(self):
-        return list(
-            Mensagem.objects.filter(sala__nome=self.nome_sala)
+        mensagens = (
+            Mensagem.objects
+            .filter(sala__nome=self.nome_sala)
+            .select_related("resposta")
             .order_by("enviado_as")
-            .values("id","username", "conteudo", "enviado_as", "resposta")
         )
+
+        historico = []
+
+        for mensagem in mensagens:
+            historico.append({
+                "id": mensagem.id,
+                "username": mensagem.username,
+                "conteudo": mensagem.conteudo,
+                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
+                "resposta": (
+                    {
+                        "id": mensagem.resposta.id,
+                        "username": mensagem.resposta.username,
+                        "conteudo": mensagem.resposta.conteudo,
+                        "enviado_as": mensagem.resposta.enviado_as.strftime("%d/%m/%Y %H:%M"),
+                    }
+                    if mensagem.resposta
+                    else None
+                )
+            })
+
+        return historico
     
 #------------------------------------------------------------------------------------
 
@@ -56,8 +79,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.nome_sala, self.channel_name)
         await self.accept()
         historico = await self.search_message()
-        for mensagem in historico:
-            mensagem["enviado_as"] = mensagem["enviado_as"].strftime("%d/%m/%Y %H:%M")
+
+        await self.send(text_data=json.dumps({
+            "tipo": "historico",
+            "mensagens": historico
+        }))
         await self.send(text_data=json.dumps({
         "tipo": "historico",
         "mensagens": historico
@@ -91,7 +117,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "id": text_data_json["id"]
                 }
             )
-            
             return
         
         username = text_data_json["username"]
@@ -107,9 +132,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             resposta
         )
 
+        resposta = None
 
-        # envia o evento para todos os usuários conectados à sala
-        # campo "type" determina qual método será executado em cada usuario
+        if mensagem.resposta:
+            resposta = {
+                "id": mensagem.resposta.id,
+                "username": mensagem.resposta.username,
+                "conteudo": mensagem.resposta.conteudo,
+            }
+
         await self.channel_layer.group_send(
             self.nome_sala,
             {
@@ -118,7 +149,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
                 "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
-                "resposta": mensagem.resposta_id
+                "resposta": resposta,
             }
         )
 

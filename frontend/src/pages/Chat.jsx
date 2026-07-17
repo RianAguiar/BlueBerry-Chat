@@ -70,10 +70,11 @@ export function Chat() {
                 username: username,
                 conteudo: inputc,
                 enviado_as: new Date().toLocaleString(),
-                reply: reply?.id ?? null,
+                resposta: reply?.id ?? null,
             }))
             pop()
             setInputc('')
+            setReply(null)
 
         }
     }
@@ -142,15 +143,17 @@ export function Chat() {
                                             duration: 0.1,
                                         },
                                     }}
+
                                 >
-                                    {reply && (
-                                        <div className="reply-preview">
-                                            <strong>Respondendo a {reply.username}</strong>
-                                            <p>{reply.conteudo}</p>
-                                            <IoArrowBack onClick={() => setReplyTo(null)}/>
+
+                                    {mensagem.resposta && (
+                                        <div className="reply-message">
+                                            <small>Replying: {mensagem.resposta.username} : </small>
+                                            <small>{mensagem.resposta.conteudo}</small>
                                         </div>
                                     )}
                                     <div className="top">
+                                        
                                         <strong>{mensagem.username}</strong>
                                         <LuReply className="reply" onClick={() => handleReply(mensagem)} />
                                         <IoTrashOutline className="trash" title="Excluir mensagem"
@@ -167,12 +170,20 @@ export function Chat() {
                         </AnimatePresence>
                     </div>
 
+                    {reply && (
+                        <div className="reply-preview">
+                            <small>Respondendo a {reply.username}</small>
+                            <p>{reply.conteudo}</p>
+                            <IoArrowBack onClick={() => setReply(null)} />
+                        </div>
+                    )}
+
                     <div className="input-container">
                         <input
                             type="text"
                             value={inputc}
                             onChange={(e) => setInputc(e.target.value)}
-                            placeholder="Digite uma mensagem..."
+                            placeholder="Type a message :)"
                             onKeyDown={handleKeyDown}
                         />
 
