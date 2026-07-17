@@ -6,8 +6,6 @@ Meu projeto consiste em um sistema de chat anônimo e prático, no qual não é 
 
 ideias de features:
 
-- Responder mensagens (reply).
-- implementar redis
 - Indicador "está digitando..."
 - Mensagens do sistema, como:
     João entrou na sala.
