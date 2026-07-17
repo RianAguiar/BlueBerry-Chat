@@ -114,17 +114,21 @@ REST_FRAMEWORK = {
     ),
 }
 
-SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30),
-    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-}
+
 
 ASGI_APPLICATION = 'backend.asgi.application'
 
+'''
+Para desenvolvimento é mais comodo usar o channel_layer do django channels
+mas em ambiente de produção, usar o redis channel layer é melhor
+'''
 CHANNEL_LAYERS = {
-    'default': {
-        'BACKEND': 'channels.layers.InMemoryChannelLayer'
-    }
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
 
 ''' importante colocar isso se n o react n consegue fazer o fetch na api '''

@@ -7,28 +7,57 @@ from channels.db import database_sync_to_async
 class ChatConsumer(AsyncWebsocketConsumer):
 #------------------- FUNÇÕES QUE ACESSAM O BANCO DE DADOS----------------------------
     @database_sync_to_async
-    def delete_message(self, nome, id):
+    def delete_message_db(self, nome, id):
         Mensagem.objects.filter(sala__nome=nome, id=id).delete()
         
         
 
     @database_sync_to_async
-    def save_message(self, nome_sala, username, conteudo, enviado_as):
+    def save_message(self, nome_sala, username, conteudo, enviado_as, resposta):
         sala = Sala.objects.get(nome=nome_sala)
+
+        resposta_obj = None
+        if resposta:
+            resposta_obj = Mensagem.objects.get(id=resposta)
+
         return Mensagem.objects.create(
             sala=sala,
-            username=username,
+            username=username,  
             conteudo=conteudo,
-            enviado_as=enviado_as
+            enviado_as=enviado_as,
+            resposta=resposta_obj
         )
     
     @database_sync_to_async
     def search_message(self):
-        return list(
-            Mensagem.objects.filter(sala__nome=self.nome_sala)
+        mensagens = (
+            Mensagem.objects
+            .filter(sala__nome=self.nome_sala)
+            .select_related("resposta")
             .order_by("enviado_as")
-            .values("id","username", "conteudo", "enviado_as")
         )
+
+        historico = []
+
+        for mensagem in mensagens:
+            historico.append({
+                "id": mensagem.id,
+                "username": mensagem.username,
+                "conteudo": mensagem.conteudo,
+                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
+                "resposta": (
+                    {
+                        "id": mensagem.resposta.id,
+                        "username": mensagem.resposta.username,
+                        "conteudo": mensagem.resposta.conteudo,
+                        "enviado_as": mensagem.resposta.enviado_as.strftime("%d/%m/%Y %H:%M"),
+                    }
+                    if mensagem.resposta
+                    else None
+                )
+            })
+
+        return historico
     
 #------------------------------------------------------------------------------------
 
@@ -50,8 +79,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(self.nome_sala, self.channel_name)
         await self.accept()
         historico = await self.search_message()
-        for mensagem in historico:
-            mensagem["enviado_as"] = mensagem["enviado_as"].strftime("%d/%m/%Y %H:%M")
+
+        await self.send(text_data=json.dumps({
+            "tipo": "historico",
+            "mensagens": historico
+        }))
         await self.send(text_data=json.dumps({
         "tipo": "historico",
         "mensagens": historico
@@ -74,35 +106,41 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
         if text_data_json.get("type") == "delete":
-            await self.delete_message(
+            await self.delete_message_db(
                 self.nome_sala,
                 text_data_json["id"]
             )
-
             await self.channel_layer.group_send(
                 self.nome_sala,
                 {
-                    "type": "chat.delete",
+                    "type": "delete.message",
                     "id": text_data_json["id"]
                 }
             )
-            
             return
         
         username = text_data_json["username"]
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
+        resposta = text_data_json["resposta"]
 
         mensagem = await self.save_message(
             self.nome_sala,
             username,
             conteudo,
-            enviado_as
+            enviado_as,
+            resposta
         )
 
+        resposta = None
 
-        # envia o evento para todos os usuários conectados à sala
-        # campo "type" determina qual método será executado em cada usuario
+        if mensagem.resposta:
+            resposta = {
+                "id": mensagem.resposta.id,
+                "username": mensagem.resposta.username,
+                "conteudo": mensagem.resposta.conteudo,
+            }
+
         await self.channel_layer.group_send(
             self.nome_sala,
             {
@@ -110,7 +148,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "id": mensagem.id,
                 "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
-                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M")
+                "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
+                "resposta": resposta,
             }
         )
 
@@ -125,7 +164,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "id": event["id"],
                 "username": event["username"],
                 "conteudo": event["conteudo"],
-                "enviado_as": event["enviado_as"]
+                "enviado_as": event["enviado_as"],
+                "resposta": event["resposta"]
             })
         )
     

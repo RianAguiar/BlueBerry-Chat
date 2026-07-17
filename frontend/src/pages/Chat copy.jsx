@@ -1,7 +1,7 @@
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl"
 import { LuReply } from "react-icons/lu"
-import { IoTrashOutline, IoArrowBack } from "react-icons/io5"
+import { IoTrashOutline } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
 import { handleEnterKey } from "../components/handleEnterKey"
@@ -12,7 +12,6 @@ export function Chat() {
     const { nome } = useParams()
     const [inputc, setInputc] = useState('')
     const [messages, setMessages] = useState([])
-    const [reply, setReply] = useState(null)
     const socketRef = useRef(null)
     const navigate = useNavigate()
 
@@ -69,17 +68,14 @@ export function Chat() {
             socketRef.current.send(JSON.stringify({
                 username: username,
                 conteudo: inputc,
-                enviado_as: new Date().toLocaleString(),
-                resposta: reply?.id ?? null,
+                enviado_as: new Date().toLocaleString()
             }))
             pop()
             setInputc('')
-            setReply(null)
 
         }
     }
 
-    const handleReply = (message) => { setReply(message) }
 
 
     /* EXCLUIR Sala */
@@ -143,17 +139,9 @@ export function Chat() {
                                             duration: 0.1,
                                         },
                                     }}
-
                                 >
 
-                                    {mensagem.resposta && (
-                                        <div className="reply-message">
-                                            <small>Replying: {mensagem.resposta.username} : </small>
-                                            <small>{mensagem.resposta.conteudo}</small>
-                                        </div>
-                                    )}
                                     <div className="top">
-                                        
                                         <strong>{mensagem.username}</strong>
                                         <LuReply className="reply" onClick={() => handleReply(mensagem)} />
                                         <IoTrashOutline className="trash" title="Excluir mensagem"
@@ -170,20 +158,12 @@ export function Chat() {
                         </AnimatePresence>
                     </div>
 
-                    {reply && (
-                        <div className="reply-preview">
-                            <small>Respondendo a {reply.username}</small>
-                            <p>{reply.conteudo}</p>
-                            <IoArrowBack onClick={() => setReply(null)} />
-                        </div>
-                    )}
-
                     <div className="input-container">
                         <input
                             type="text"
                             value={inputc}
                             onChange={(e) => setInputc(e.target.value)}
-                            placeholder="Type a message :)"
+                            placeholder="Digite uma mensagem..."
                             onKeyDown={handleKeyDown}
                         />
 
