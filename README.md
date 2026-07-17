@@ -10,7 +10,7 @@ Chat Project to improve my code skills and my stack, where i document all my evo
 
 # CHAT PAGE
 <p align="center">
-  <img src="frontend/Documentation/ChatPage.png" width="1000px" />
+  <img src="frontend/Documentation/ChatPage1.png" width="1000px" />
 </p>
 
 # STACK
