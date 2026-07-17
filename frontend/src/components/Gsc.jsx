@@ -2,11 +2,17 @@ import '../styles/Gsc.css'
 
 function Gsc(props) {
     const eastereggemoji = '🧛‍♀️'
+    const audio = new Audio('/sounds/GSC.mp3')
     const TocarAudio = () => {
-        const audio = new Audio('/sounds/GSC.mp3')
+        if (audio.paused){
         audio.volume = 0.05
-        audio.play()
+        audio.play()}
+        else{
+            audio.pause()
+            audio.currentTime = 0
+        }
     }
+    
 
     return (
         <>
