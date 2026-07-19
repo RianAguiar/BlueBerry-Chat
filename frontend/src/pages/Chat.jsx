@@ -5,6 +5,7 @@ import { IoTrashOutline, IoArrowBack } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
 import { handleEnterKey } from "../components/handleEnterKey"
+import { debounce } from "../components/debounce"
 import pop from "../components/pop"
 import '../styles/Chat.css'
 
@@ -20,6 +21,9 @@ export function Chat() {
     function handleKeyDown(e) {
         handleEnterKey(e, inputc, sendMessage)
     }
+
+    // está fazendo debounce de 2 segundos em messagetyping para n flodar o servidor
+    const messageTypingDebounce = debounce(messageTyping, 2000)
 
 
     //BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) 
@@ -110,6 +114,13 @@ export function Chat() {
             id: id,
         }))
     }
+
+    const messageTyping = () => {
+            socketRef.current.send(JSON.stringify({
+                type: "typing",
+                username: username,
+            }))
+        }
 
     return (
         <>

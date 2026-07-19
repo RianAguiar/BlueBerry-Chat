@@ -5,8 +5,8 @@ function Gsc(props) {
     const audio = new Audio('/sounds/GSC.mp3')
     const TocarAudio = () => {
         if (audio.paused){
-        audio.volume = 0.05
-        audio.play()}
+            audio.volume = 0.05
+            audio.play()}
         else{
             audio.pause()
             audio.currentTime = 0
