@@ -45,14 +45,18 @@ export function Chat() {
             if (data.tipo === "historico") {
                 setMessages(data.mensagens)
             }
-            else if (data.type === "typing" && data.username !== username) {
-                setTyping(data)
-                
-                clearTimeout(typingTimeout.current)
-                // após 2 segundos sem o usuario digitar, o sistema seta o usestate de typing pra nulo
-                setTimeout(() => {
-                    setTyping(null)
-                }, 2000)
+            else if (data.type === "typing") {
+                if (data.username !== username) {
+                    setTyping(data)
+
+                    clearTimeout(typingTimeout.current)
+
+                    typingTimeout.current = setTimeout(() => {
+                        setTyping(null)
+                    }, 2000)
+                }
+
+                return
             }
             else if (data.type === "delete") {
                 setMessages(prev =>
@@ -71,7 +75,7 @@ export function Chat() {
         return () => {
             socketRef.current?.close()
         }
-    }, [nome])
+    }, [nome, username])
 
 
     //Enviar mensagem
