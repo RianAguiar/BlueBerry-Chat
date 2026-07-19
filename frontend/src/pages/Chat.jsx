@@ -5,7 +5,7 @@ import { IoTrashOutline, IoArrowBack } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
 import { useEffect, useState, useRef } from 'react'
 import { handleEnterKey } from "../components/handleEnterKey"
-import { debounce } from "../components/debounce"
+import debounce from "../components/debounce"
 import pop from "../components/pop"
 import '../styles/Chat.css'
 
@@ -15,6 +15,7 @@ export function Chat() {
     const [messages, setMessages] = useState([])
     const [reply, setReply] = useState(null)
     const [typing, setTyping] = useState()
+    const typingTimeout = useRef(null)
     const socketRef = useRef(null)
     const navigate = useNavigate()
 
@@ -43,6 +44,15 @@ export function Chat() {
             console.log("Dado recebido:", data)
             if (data.tipo === "historico") {
                 setMessages(data.mensagens)
+            }
+            else if (data.type === "typing" && data.username !== username) {
+                setTyping(data)
+                
+                clearTimeout(typingTimeout.current)
+                // após 2 segundos sem o usuario digitar, o sistema seta o usestate de typing pra nulo
+                setTimeout(() => {
+                    setTyping(null)
+                }, 2000)
             }
             else if (data.type === "delete") {
                 setMessages(prev =>
@@ -111,18 +121,17 @@ export function Chat() {
             type: "delete",
             id: id,
         }))
-    }    
+    }
 
     const messageTyping = () => {
-            socketRef.current.send(JSON.stringify({
-                type: "typing",
-                username: username,
-            }))
-        }
+        socketRef.current.send(JSON.stringify({
+            type: "typing",
+            username: username,
+        }))
+    }
 
     // está fazendo debounce de 2 segundos em messagetyping para n flodar o servidor
-    const messageTypingDebounce = debounce(messageTyping, 505)
-
+    const messageTypingDebounce = useRef(debounce(messageTyping, 505)).current
     return (
         <>
 
@@ -172,11 +181,11 @@ export function Chat() {
                                                 {mensagem.resposta.conteudo.slice(0, 30)}
                                                 {mensagem.resposta.conteudo.length > 30 && "..."}
                                             </small>
-                                            
+
                                         </div>
                                     )}
                                     <div className="top">
-                                        
+
                                         <strong>{mensagem.username}</strong>
                                         <LuReply className="reply" title="Reply message" onClick={() => handleReply(mensagem)} />
                                         <IoTrashOutline className="trash" title="Delete message"
@@ -209,10 +218,13 @@ export function Chat() {
                         <input
                             type="text"
                             value={inputc}
-                            onChange={(e) => setInputc(e.target.value)}
+                            onChange={(e) => {
+                                setInputc(e.target.value)
+                                messageTypingDebounce()
+                            }}
                             placeholder="Type a message :)"
                             onKeyDown={handleKeyDown}
-                            onChange={messageTyping}
+
                         />
 
                         <SlArrowRightCircle onClick={sendMessage} title="Send message" />

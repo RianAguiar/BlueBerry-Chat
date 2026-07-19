@@ -112,9 +112,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "type": "typing.message",
                     "username": text_data_json["username"]
                 })
+            return
 
         # DELETAR MENSAGEM
-        if text_data_json.get("type") == "delete":
+        elif text_data_json.get("type") == "delete":
             await self.delete_message_db(
                 self.nome_sala,
                 text_data_json["id"]
