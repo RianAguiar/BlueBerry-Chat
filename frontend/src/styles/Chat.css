@@ -168,3 +168,17 @@ p{
     word-break: break-word;
     white-space: pre-wrap;
 }
+
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+body::-webkit-scrollbar-track {
+  background: #5220a9;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #79797a;
+  border-radius: 999px;
+}
+
