@@ -14,6 +14,7 @@ export function Chat() {
     const [inputc, setInputc] = useState('')
     const [messages, setMessages] = useState([])
     const [reply, setReply] = useState(null)
+    const [typing, setTyping] = useState()
     const socketRef = useRef(null)
     const navigate = useNavigate()
 
@@ -21,9 +22,6 @@ export function Chat() {
     function handleKeyDown(e) {
         handleEnterKey(e, inputc, sendMessage)
     }
-
-    // está fazendo debounce de 2 segundos em messagetyping para n flodar o servidor
-    const messageTypingDebounce = debounce(messageTyping, 2000)
 
 
     //BUSCANDO O USERNAME NO LOCALSTORAGE(FOI PEGO NO COMPONENTE INDEXFORM) 
@@ -113,7 +111,7 @@ export function Chat() {
             type: "delete",
             id: id,
         }))
-    }
+    }    
 
     const messageTyping = () => {
             socketRef.current.send(JSON.stringify({
@@ -121,6 +119,9 @@ export function Chat() {
                 username: username,
             }))
         }
+
+    // está fazendo debounce de 2 segundos em messagetyping para n flodar o servidor
+    const messageTypingDebounce = debounce(messageTyping, 505)
 
     return (
         <>
@@ -198,6 +199,12 @@ export function Chat() {
                         </div>
                     )}
 
+                    {typing && (
+                        <div className="message-typing">
+                            <small>{typing.username} is typing</small>
+                        </div>
+                    )}
+
                     <div className="input-container">
                         <input
                             type="text"
@@ -205,6 +212,7 @@ export function Chat() {
                             onChange={(e) => setInputc(e.target.value)}
                             placeholder="Type a message :)"
                             onKeyDown={handleKeyDown}
+                            onChange={messageTyping}
                         />
 
                         <SlArrowRightCircle onClick={sendMessage} title="Send message" />

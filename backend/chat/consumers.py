@@ -104,7 +104,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
 
+        # ENVIAR MENSAGEM DE DIGITAÇÃO
+        if text_data_json.get("type") == "typing":
+            await self.channel_layer.group_send(
+                self.nome_sala,
+                {
+                    "type": "typing.message",
+                    "username": text_data_json["username"]
+                })
 
+        # DELETAR MENSAGEM
         if text_data_json.get("type") == "delete":
             await self.delete_message_db(
                 self.nome_sala,
@@ -115,8 +124,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 {
                     "type": "delete.message",
                     "id": text_data_json["id"]
-                }
-            )
+                })
             return
         
         username = text_data_json["username"]
@@ -134,6 +142,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
         resposta = None
 
+
+        # ENVIAR MENSAGEM RESPOSTA
         if mensagem.resposta:
             resposta = {
                 "id": mensagem.resposta.id,
@@ -150,10 +160,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "conteudo": mensagem.conteudo,
                 "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
                 "resposta": resposta,
-            }
-        )
+            })
 
-
+    async def typing_message(self, event):
+        await self.send(text_data=json.dumps({
+            "type": "typing",
+            "username": event["username"]
+        }))
 
     async def send_message(self, event):
             # envia a mensagem para o cliente conectado via websocket
@@ -166,8 +179,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "conteudo": event["conteudo"],
                 "enviado_as": event["enviado_as"],
                 "resposta": event["resposta"]
-            })
-        )
+            }))
     
     async def delete_message(self, event):
         await self.send(text_data=json.dumps({
