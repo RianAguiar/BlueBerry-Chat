@@ -24,38 +24,98 @@ Chat Project to improve my code skills and my stack, where i document all my evo
 - PostgreSQL (soon)
 - Celery (soon)
 - TDD (soon)
+# Installation
 
-# installation
-# 1. Make the Virtual Environment
+## 1. Create a virtual environment
+
+```bash
 python -m venv venv
+```
 
-# 2. Activating
+## 2. Activate the virtual environment
+
+**Windows**
+
+```bash
 venv\Scripts\activate
+```
 
-or
+## 3. Install dependencies
 
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process                                            
-venv\Scripts\activate         
+**Backend**
 
-# 3. Dependencies Installation
+```bash
 pip install -r requirements.txt
-# and
+```
+
+**Frontend**
+
+```bash
 cd frontend
 npm install
+```
 
-# 4.Run servers
+## 4. Start the application
+
+Start the Django server:
+
+```bash
 cd backend
 python manage.py runserver
-(open another terminal)
-# and
+```
+
+Open a new terminal and start the React application:
+
+```bash
 cd frontend
 npm run dev
+```
 
-# 5.optionals
-- SQLite Viewer(VScode extension)
-WebSocket Tester:
-- https://hoppscotch.io/realtime/websocket
+---
 
+# Redis Setup (Windows + Docker)
 
+This project uses **Redis** with **Django Channels** for real-time communication
 
+## Prerequisites
 
+- Docker Desktop (WSL2 enabled)
+
+## 1. Pull the Redis image
+
+```bash
+docker pull redis
+```
+
+## 2. Run the Redis container
+
+```bash
+docker run --name redis-chat -p 6379:6379 -d redis
+```
+
+## 3. Check if the container is running
+
+```bash
+docker ps
+```
+
+## 4. Start the container (if it was stopped)
+
+```bash
+docker start redis-chat
+```
+
+## 5. Stop the container
+
+```bash
+docker stop redis-chat
+```
+
+> **Note:** Make sure Docker Desktop is running before starting the Django server.
+
+---
+
+# Optional Tools
+
+- **SQLite Viewer** (VS Code extension)
+- **WebSocket Tester:** https://hoppscotch.io/realtime/websocket
