@@ -6,7 +6,7 @@ Meu projeto consiste em um sistema de chat anônimo e prático, no qual não é 
 
 ideias de features:
 
-- Indicador "está digitando..."
+
 - Mensagens do sistema, como:
     João entrou na sala.
     Maria saiu da sala.

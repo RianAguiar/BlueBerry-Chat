@@ -3,11 +3,16 @@ import { SlArrowRightCircle, SlArrowLeft } from "react-icons/sl"
 import { LuReply } from "react-icons/lu"
 import { IoTrashOutline, IoArrowBack } from "react-icons/io5"
 import { AnimatePresence, motion } from "framer-motion"
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useState, useRef, useLayoutEffect } from 'react'
 import { handleEnterKey } from "../components/handleEnterKey"
 import debounce from "../components/debounce"
 import pop from "../components/pop"
 import '../styles/Chat.css'
+
+//useState serve para armazenar e atualizar dados que mudam com o tempo
+
+//useeffect é um efeito executado sempre que o componente renderiza e alguma dependência muda
+//usado em ações automáticas que rodam após a renderização,exemplo: buscar dados em uma API
 
 export function Chat() {
     const { nome } = useParams()
@@ -17,6 +22,7 @@ export function Chat() {
     const [typing, setTyping] = useState()
     const typingTimeout = useRef(null)
     const socketRef = useRef(null)
+    const chatRef = useRef(null)
     const navigate = useNavigate()
 
     // Função para poder enviar mensagem usando o "enter"
@@ -76,6 +82,14 @@ export function Chat() {
             socketRef.current?.close()
         }
     }, [nome, username])
+
+
+    useLayoutEffect(() => {
+        window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: "smooth",
+        })
+    }, [messages])
 
 
     //Enviar mensagem
@@ -157,7 +171,7 @@ export function Chat() {
 
             <div className="chat-container">
                 <div className="chat-box">
-                    <div className="messages">
+                    <div className="messages" ref={chatRef}>
                         <AnimatePresence>
                             {messages.map((mensagem) => (
                                 <motion.div
