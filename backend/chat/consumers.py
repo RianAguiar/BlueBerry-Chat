@@ -77,6 +77,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         # os consumidores pertencentes ao mesmo grupo "channel_layer" permite que os usuarios se mantenham no mesmo canal de comunicação
         # o django channel gera automaticamente channel_name diferente para os clientes conectados
         await self.channel_layer.group_add(self.nome_sala, self.channel_name)
+
         await self.accept()
         historico = await self.search_message()
 
@@ -84,10 +85,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "tipo": "historico",
             "mensagens": historico
         }))
-        await self.send(text_data=json.dumps({
-        "tipo": "historico",
-        "mensagens": historico
-        }))
+
+
+
 
 
 
@@ -103,6 +103,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     """
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
+        
+
+        if text_data_json.get("type") == "join":
+            await self.channel_layer.group_send(
+                self.nome_sala,
+                {
+                    "type": "chat.join",
+                    "username": text_data_json["username"],
+                }
+            )
+            return
 
         # ENVIAR MENSAGEM DE DIGITAÇÃO
         if text_data_json.get("type") == "typing":
@@ -127,6 +138,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     "id": text_data_json["id"]
                 })
             return
+        
+
         
         username = text_data_json["username"]
         conteudo = text_data_json["conteudo"]
@@ -162,6 +175,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
                 "resposta": resposta,
             })
+        
+
 
     async def typing_message(self, event):
         await self.send(text_data=json.dumps({
@@ -188,4 +203,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "id": event["id"]
         }))
 
+    async def chat_join(self, event):
+        await self.send(text_data=json.dumps({
+            "type": "join",
+            "username": event["username"]
+        }))
 #------------------------------------------------------------------------------------

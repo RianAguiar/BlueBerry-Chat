@@ -20,7 +20,9 @@ export function Chat() {
     const [messages, setMessages] = useState([])
     const [reply, setReply] = useState(null)
     const [typing, setTyping] = useState()
+    const [join, setJoin] = useState()
     const typingTimeout = useRef(null)
+    const joinTimeout = useRef(null)
     const socketRef = useRef(null)
     const chatRef = useRef(null)
     const navigate = useNavigate()
@@ -43,6 +45,13 @@ export function Chat() {
 
         socketRef.current.onopen = () => {
             console.log("Conectado!")
+                
+            socketRef.current.send(JSON.stringify({
+                type: "join",
+                username: username
+            }))
+
+            
         }
 
         socketRef.current.onmessage = (event) => {
@@ -64,6 +73,18 @@ export function Chat() {
 
                 return
             }
+
+            else if (data.type === "join") {
+                setJoin(data)
+                clearTimeout(joinTimeout.current)
+
+                joinTimeout.current = setTimeout(() => {
+                    setJoin(null)
+                }, 3000)
+
+            }
+
+
             else if (data.type === "delete") {
                 setMessages(prev =>
                     prev.filter(msg => msg.id !== data.id)
@@ -90,6 +111,8 @@ export function Chat() {
             behavior: "smooth",
         })
     }, [messages])
+
+
 
 
     //Enviar mensagem
@@ -191,6 +214,7 @@ export function Chat() {
                                     }}
 
                                 >
+                                    
 
                                     {mensagem.resposta && (
                                         <div className="reply-message">
@@ -231,6 +255,13 @@ export function Chat() {
                             <small>{typing.username} is typing</small>
                         </div>
                     )}
+
+                    {join && (
+                        <div className="message-join">
+                            <small>{join.username} has just arrived</small>
+                        </div>
+                    )}
+
 
                     <div className="input-container">
                         <input
