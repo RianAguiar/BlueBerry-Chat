@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useState, useRef, useLayoutEffect } from 'react'
-import { handleEnterKey } from "../components/handleEnterKey"
-import debounce from "../components/debounce"
-import pop from "../components/pop"
+import HandleEnterKey from "../components/HandleEnterKey"
+import Debouncer from "../components/Debouncer"
+import Pop from "../components/Pop"
 import { useChatSocket } from "../hooks/useChatSocket"
 import ChatHeader from "../components/ChatHeader"
 import MessageList from "../components/MessageList"
@@ -30,14 +30,14 @@ export function Chat() {
 
     const handleSend = () => {
         sendMessage(inputc, reply)
-        pop()
+        Pop()
         setInputc('')
         setReply(null)
     }
 
-    const handleKeyDown = (e) => handleEnterKey(e, inputc, handleSend)
+    const HandleKeyDown = (e) => HandleEnterKey(e, inputc, handleSend)
 
-    const messageTypingDebounce = useRef(debounce(notifyTyping, 505)).current
+    const messageTypingDebounce = useRef(Debouncer(notifyTyping, 505)).current
 
     const excluirSala = async () => {
         try {
@@ -78,7 +78,7 @@ export function Chat() {
                             setInputc(e.target.value)
                             messageTypingDebounce()
                         }}
-                        onKeyDown={handleKeyDown}
+                        onKeyDown={HandleKeyDown}
                         onSend={handleSend}
                     />
                 </div>

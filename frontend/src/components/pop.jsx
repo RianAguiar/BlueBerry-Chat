@@ -1,4 +1,4 @@
-function pop() {
+function Pop() {
         const TocarAudio = () => {
         const audio = new Audio('/sounds/pop.mp3')
         audio.volume = 0.30
@@ -7,4 +7,4 @@ function pop() {
     TocarAudio()
 }
 
-export default pop
+export default Pop

@@ -1,4 +1,4 @@
-function debounce(fn, delay){
+function Debouncer(fn, delay){
     let timeout
 
   return function (...args) {
@@ -9,4 +9,4 @@ function debounce(fn, delay){
     }, delay)
   }
 }
-export default debounce
+export default Debouncer

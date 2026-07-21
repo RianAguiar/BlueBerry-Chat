@@ -1,4 +1,4 @@
-export function handleEnterKey(e, value, callback) {
+export default function HandleEnterKey(e, value, callback) {
     
         if (e.key !== "Enter") return
         
