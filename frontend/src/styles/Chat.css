@@ -185,3 +185,50 @@ body::-webkit-scrollbar-track {
   border-radius: 999px;
 }
 
+.reply-preview {
+    animation: slideDown 0.4s ease;
+}
+
+.message-typing {
+    animation: slideDown 0.4s ease;
+    animation: disappear 3s ease forwards;
+}
+
+
+.message-join {
+    animation: slideDown 0.4s ease;
+    animation: disappear 3s ease forwards;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes disappear {
+    0% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    15% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    85% {
+        opacity: 1;
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
