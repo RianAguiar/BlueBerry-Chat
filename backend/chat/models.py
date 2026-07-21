@@ -11,6 +11,9 @@ class Mensagem(models.Model):
     conteudo = models.TextField()
     enviado_as = models.DateTimeField(auto_now_add=True)
     resposta = models.ForeignKey("self", null=True, blank=True, on_delete=models.SET_NULL, related_name="respostas")
+    profile_pic = models.ImageField(upload_to='profilePic/', null=True, blank=True)
+    image = models.ImageField(upload_to='images/', null=True, blank=True)
+    
     def __str__(self):
         return f'{self.username} : {self.conteudo}'
     

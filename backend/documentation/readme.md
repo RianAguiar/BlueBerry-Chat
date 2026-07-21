@@ -6,16 +6,10 @@ Meu projeto consiste em um sistema de chat anônimo e prático, no qual não é 
 
 ideias de features:
 
-
-- Mensagens do sistema, como:
-    João entrou na sala.
-    Maria saiu da sala.
 - função de mandar imagens nas salas
-- função de poder criar sub-salas
 - função de poder ver quantas pessoas estão conectadas na sala
 - função de colocar senha nas salas
 - função de colocar foto no perfil
-- função de colocar foto na sala
 
 
 
