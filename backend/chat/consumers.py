@@ -54,6 +54,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
                     }
                     if mensagem.resposta
                     else None
+                ),
+                "resposta": (
+                    {
+                        "id": mensagem.image.id,
+  
+                    }
+                    if mensagem.resposta
+                    else None
                 )
             })
 
@@ -145,19 +153,29 @@ class ChatConsumer(AsyncWebsocketConsumer):
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
         resposta = text_data_json["resposta"]
+        image = text_data_json["image"]
 
         mensagem = await self.save_message(
             self.nome_sala,
             username,
             conteudo,
             enviado_as,
-            resposta
+            resposta,
+            image,
         )
 
         resposta = None
+        image = None
+
+        if mensagem.resposta:
+            image = {
+                "id": mensagem.image.id,
+
+            }
 
 
-        # ENVIAR MENSAGEM RESPOSTA
+
+        # ENVIAR MENSAGEM QUE ESTA SENDO RESPONDIDA
         if mensagem.resposta:
             resposta = {
                 "id": mensagem.resposta.id,
@@ -174,6 +192,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "conteudo": mensagem.conteudo,
                 "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
                 "resposta": resposta,
+                "image": image,
             })
         
 
