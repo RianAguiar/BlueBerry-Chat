@@ -1,6 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import Sala
+from .models import Sala, Mensagem
 from .serializers import SalaSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
@@ -29,5 +29,22 @@ class SalaAPIView(APIView):
         sala = get_object_or_404(Sala, nome=nome)
         sala.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-    
-    
+
+# Para mandar imagem nas mensagens
+class MensagensAPIView (APIView):
+    def post(self, request, nome):
+
+        '''
+        o django channels n envia arquivos binarios ent tem que fazer a requisição pela api, salvar no banco
+        e passar o caminho(url) pelo django channels
+        '''
+        imagem = request.FILES["image"]
+        mensagem = Mensagem.objects.create(
+            username=request.data["username"],
+            image=imagem
+        )
+        return Response({
+            "id" : mensagem.id,
+            "image" : mensagem.imagem.url
+        })
+        

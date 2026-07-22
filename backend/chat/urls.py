@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import SalaAPIView
+from .views import SalaAPIView, MensagensAPIView
 
 
 urlpatterns = [
@@ -7,4 +7,6 @@ urlpatterns = [
     #POST              /api/sala/<nome>/                         entrar ou criar sala
     #DELETE            /api/sala/<nome>/                         deletar sala
     path("sala/<str:nome>/", SalaAPIView.as_view(), name="Sala"),
+    path("/sala/<str:nome>/mensagens/", MensagensAPIView.as_view(), name="Mensagens"),
+    
 ]
