@@ -13,7 +13,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         
 
     @database_sync_to_async
-    def save_message(self, nome_sala, username, conteudo, enviado_as, resposta):
+    def save_message(self, nome_sala, username, conteudo, enviado_as, resposta, image):
         sala = Sala.objects.get(nome=nome_sala)
 
         resposta_obj = None
@@ -25,7 +25,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
             username=username,  
             conteudo=conteudo,
             enviado_as=enviado_as,
-            resposta=resposta_obj
+            resposta=resposta_obj,
+            image=image
         )
     
     @database_sync_to_async
@@ -45,24 +46,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
                 "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
+                "image": mensagem.image,
                 "resposta": (
                     {
                         "id": mensagem.resposta.id,
                         "username": mensagem.resposta.username,
                         "conteudo": mensagem.resposta.conteudo,
+                        "image": mensagem.resposta.image,
                         "enviado_as": mensagem.resposta.enviado_as.strftime("%d/%m/%Y %H:%M"),
                     }
                     if mensagem.resposta
                     else None
                 ),
-                "resposta": (
-                    {
-                        "id": mensagem.image.id,
-  
-                    }
-                    if mensagem.resposta
-                    else None
-                )
             })
 
         return historico
@@ -72,7 +67,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 
 #--------------------------- FUNÇÕES WEBSOCKETS--------------------------------------
-
     async def connect(self):
         # pegando o nome da sala apartir da url
         self.nome = self.scope["url_route"]["kwargs"]["nome"]
@@ -95,15 +89,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
         }))
 
 
-
-
-
-
     # Sair da sala
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.nome_sala, self.channel_name)
-
-
 
     """
     Recebe todas as mensagens enviadas pelo cliente via WebSocket
@@ -147,8 +135,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 })
             return
         
-
-        
         username = text_data_json["username"]
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
@@ -165,22 +151,13 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
         resposta = None
-        image = None
-
-        if mensagem.resposta:
-            image = {
-                "id": mensagem.image.id,
-
-            }
-
-
-
         # ENVIAR MENSAGEM QUE ESTA SENDO RESPONDIDA
         if mensagem.resposta:
             resposta = {
                 "id": mensagem.resposta.id,
                 "username": mensagem.resposta.username,
                 "conteudo": mensagem.resposta.conteudo,
+                "image": mensagem.image.conteudo,
             }
 
         await self.channel_layer.group_send(
@@ -213,7 +190,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "username": event["username"],
                 "conteudo": event["conteudo"],
                 "enviado_as": event["enviado_as"],
-                "resposta": event["resposta"]
+                "resposta": event["resposta"],
+                "image": event["image"]
             }))
     
     async def delete_message(self, event):

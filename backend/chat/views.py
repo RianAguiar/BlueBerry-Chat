@@ -4,6 +4,9 @@ from .models import Sala, Mensagem
 from .serializers import SalaSerializer
 from django.shortcuts import get_object_or_404
 from rest_framework import status
+from django.core.files.storage import default_storage
+from rest_framework.parsers import MultiPartParser
+
 
 # apenas para consulta
 class SalaAPIView(APIView):
@@ -31,20 +34,26 @@ class SalaAPIView(APIView):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 # Para mandar imagem nas mensagens
-class MensagensAPIView (APIView):
-    def post(self, request, nome):
+class UploadImagemAPIView(APIView):
+    parser_classes = [MultiPartParser]
 
-        '''
-        o django channels n envia arquivos binarios ent tem que fazer a requisição pela api, salvar no banco
-        e passar o caminho(url) pelo django channels
-        '''
-        imagem = request.FILES["image"]
-        mensagem = Mensagem.objects.create(
-            username=request.data["username"],
-            image=imagem
-        )
+    def post(self, request, nome):
+        if not Sala.objects.filter(nome=nome).exists():
+            return Response({"erro": "Sala não encontrada"}, status=404)
+
+        arquivo = request.FILES.get("image")
+        if not arquivo:
+            return Response({"erro": "Nenhuma imagem enviada"}, status=400)
+
+        if arquivo.size > 5 * 1024 * 1024:
+            return Response({"erro": "Imagem muito grande (máx. 5MB)"}, status=400)
+
+        if not arquivo.content_type.startswith("image/"):
+            return Response({"erro": "Arquivo não é uma imagem"}, status=400)
+
+        caminho = default_storage.save(f"images/{arquivo.name}", arquivo)
+
         return Response({
-            "id" : mensagem.id,
-            "image" : mensagem.imagem.url
+            "path": caminho,
+            "url": default_storage.url(caminho)
         })
-        
