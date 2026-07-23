@@ -46,18 +46,22 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "username": mensagem.username,
                 "conteudo": mensagem.conteudo,
                 "enviado_as": mensagem.enviado_as.strftime("%d/%m/%Y %H:%M"),
-                "image": mensagem.image,
                 "resposta": (
                     {
                         "id": mensagem.resposta.id,
                         "username": mensagem.resposta.username,
                         "conteudo": mensagem.resposta.conteudo,
-                        "image": mensagem.resposta.image,
                         "enviado_as": mensagem.resposta.enviado_as.strftime("%d/%m/%Y %H:%M"),
                     }
                     if mensagem.resposta
                     else None
                 ),
+                "image": (
+                    {"url": mensagem.image.url}
+                    if mensagem.image
+                    else None
+                ),
+
             })
 
         return historico
@@ -157,8 +161,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
                 "id": mensagem.resposta.id,
                 "username": mensagem.resposta.username,
                 "conteudo": mensagem.resposta.conteudo,
-                "image": mensagem.image.conteudo,
             }
+
+        image = None
+        if mensagem.image:
+            image = {"url": mensagem.image.url}
 
         await self.channel_layer.group_send(
             self.nome_sala,
