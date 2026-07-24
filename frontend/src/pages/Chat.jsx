@@ -35,6 +35,8 @@ export function Chat() {
         setReply(null)
     }
 
+    const appendHandler = () =>{}
+
     const HandleKeyDown = (e) => HandleEnterKey(e, inputc, handleSend)
 
     const messageTypingDebounce = useRef(Debouncer(notifyTyping, 505)).current
@@ -80,6 +82,7 @@ export function Chat() {
                         }}
                         onKeyDown={HandleKeyDown}
                         onSend={handleSend}
+                        onAppend={appendHandler}
                     />
                 </div>
             </div>

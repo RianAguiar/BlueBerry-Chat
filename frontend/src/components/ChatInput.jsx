@@ -1,8 +1,11 @@
 import { SlArrowRightCircle } from "react-icons/sl"
+import { FiPaperclip } from "react-icons/fi";
 
-export function ChatInput({ value, onChange, onKeyDown, onSend }) {
+
+export function ChatInput({ value, onChange, onKeyDown, onSend, onAppend }) {
     return (
         <div className="input-container">
+            <FiPaperclip onChange={onAppend} />
             <input
                 type="text"
                 value={value}
