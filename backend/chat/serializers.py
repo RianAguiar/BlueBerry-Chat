@@ -5,4 +5,9 @@ class SalaSerializer(serializers.ModelSerializer):
     class Meta:
         model = Sala
         fields = '__all__'
+
+class UploadImagemSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Mensagem
+        fields = 'image'
         

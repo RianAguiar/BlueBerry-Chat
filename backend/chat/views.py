@@ -46,7 +46,7 @@ class UploadImagemAPIView(APIView):
             return Response({"erro": "Nenhuma imagem enviada"}, status=400)
 
         if arquivo.size > 5 * 1024 * 1024:
-            return Response({"erro": "Imagem muito grande (máx. 5MB)"}, status=400)
+            return Response({"erro": "Imagem muito grande (máx 5MB)"}, status=400)
 
         if not arquivo.content_type.startswith("image/"):
             return Response({"erro": "Arquivo não é uma imagem"}, status=400)

@@ -19,6 +19,7 @@ export function Chat() {
 
     const [inputc, setInputc] = useState('')
     const [reply, setReply] = useState(null)
+    const [image, setImage] = useState(null)
     const chatRef = useRef(null)
 
     const { messages, typing, join, sendMessage, deleteMessage, notifyTyping } =
@@ -29,10 +30,11 @@ export function Chat() {
     }, [messages])
 
     const handleSend = () => {
-        sendMessage(inputc, reply)
+        sendMessage(inputc, reply, image)
         Pop()
         setInputc('')
         setReply(null)
+        setImage(null)
     }
 
     const appendHandler = () =>{}

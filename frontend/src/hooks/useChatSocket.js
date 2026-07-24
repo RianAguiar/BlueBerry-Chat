@@ -64,13 +64,14 @@ export function useChatSocket(nome, username) {
         }
     }, [nome, username])
 
-    const sendMessage = (inputc, reply) => {
+    const sendMessage = (inputc, reply, image) => {
         if (socketRef.current && inputc.trim() !== '') {
             socketRef.current.send(JSON.stringify({
                 username: username,
                 conteudo: inputc,
                 enviado_as: new Date().toLocaleString(),
                 resposta: reply?.id ?? null,
+                image: image.path ?? null,
             }))
         }
     }
