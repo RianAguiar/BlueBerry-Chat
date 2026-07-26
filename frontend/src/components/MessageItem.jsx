@@ -2,7 +2,7 @@ import { motion } from "framer-motion"
 import { LuReply } from "react-icons/lu"
 import { IoTrashOutline } from "react-icons/io5"
 
-export function MessageItem({ mensagem, onReply, onDelete }) {
+export function MessageItem({ mensagem, onReply, onDelete,}) {
     return (
         <motion.div
             layout
@@ -24,6 +24,12 @@ export function MessageItem({ mensagem, onReply, onDelete }) {
                         {mensagem.resposta.conteudo.slice(0, 30)}
                         {mensagem.resposta.conteudo.length > 30 && "..."}
                     </small>
+                </div>
+            )}
+
+            {mensagem.image && (
+                <div className="image-message">
+                    <img src={mensagem.image} alt="" />
                 </div>
             )}
 

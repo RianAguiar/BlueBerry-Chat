@@ -69,6 +69,7 @@ export function Chat() {
                         messages={messages}
                         chatRef={chatRef}
                         onReply={setReply}
+                        image={setImage}
                         onDelete={deleteMessage}
                     />
 

@@ -71,7 +71,7 @@ export function useChatSocket(nome, username) {
                 conteudo: inputc,
                 enviado_as: new Date().toLocaleString(),
                 resposta: reply?.id ?? null,
-                image: image.path ?? null,
+                image: image ?? null,
             }))
         }
     }
