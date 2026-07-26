@@ -37,7 +37,12 @@ export function Chat() {
         setImage(null)
     }
 
-    const appendHandler = () =>{}
+    const appendHandler = (e) =>{
+        const file = e.target.files[0]
+        if (!file) return
+        console.log(file)
+        setImage(file)
+    }
 
     const HandleKeyDown = (e) => HandleEnterKey(e, inputc, handleSend)
 

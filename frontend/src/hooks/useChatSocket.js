@@ -65,13 +65,19 @@ export function useChatSocket(nome, username) {
     }, [nome, username])
 
     const sendMessage = (inputc, reply, image) => {
+        let imageUrl = null
+        if (image) {
+            imageUrl = uploadImage(image)
+        }
+
         if (socketRef.current && inputc.trim() !== '') {
             socketRef.current.send(JSON.stringify({
                 username: username,
                 conteudo: inputc,
                 enviado_as: new Date().toLocaleString(),
                 resposta: reply?.id ?? null,
-                image: image ?? null,
+                image: image ?? null
+
             }))
         }
     }
@@ -87,8 +93,30 @@ export function useChatSocket(nome, username) {
         socketRef.current.send(JSON.stringify({
             type: "typing",
             username: username,
-        }))
+        })) 
     }
 
-    return { messages, typing, join, sendMessage, deleteMessage, notifyTyping }
+    const uploadImage = async (image) => {
+    const formData = new FormData()
+    formData.append("image", image)
+
+    const response = await fetch(`http://localhost:8000/api/sala/${nome}/mensagens/upload-imagem/`, {
+        method: "POST",
+        body: formData,
+    })
+
+    const data = await response.json()
+    console.log(data)
+
+
+
+    return data.image
+}
+
+    
+
+
+
+
+    return { messages, typing, join, sendMessage, deleteMessage, notifyTyping, }
 }

@@ -14,6 +14,8 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
     @database_sync_to_async
     def save_message(self, nome_sala, username, conteudo, enviado_as, resposta, image):
+        print("IMAGE RECEBIDA:", image)
+        print("TIPO:", type(image))
         sala = Sala.objects.get(nome=nome_sala)
 
         resposta_obj = None
@@ -143,7 +145,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         conteudo = text_data_json["conteudo"]
         enviado_as = text_data_json["enviado_as"]
         resposta = text_data_json["resposta"]
-        image = text_data_json["image"]
+        image = text_data_json.get("image")
 
         mensagem = await self.save_message(
             self.nome_sala,
