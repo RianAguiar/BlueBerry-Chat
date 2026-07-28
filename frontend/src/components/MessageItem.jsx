@@ -2,7 +2,9 @@ import { motion } from "framer-motion"
 import { LuReply } from "react-icons/lu"
 import { IoTrashOutline } from "react-icons/io5"
 
-export function MessageItem({ mensagem, onReply, onDelete,}) {
+export function MessageItem({ mensagem, onReply, onDelete, }) {
+    const BACKEND_URL = "http://localhost:8000"
+
     return (
         <motion.div
             layout
@@ -29,7 +31,7 @@ export function MessageItem({ mensagem, onReply, onDelete,}) {
 
             {mensagem.image && (
                 <div className="image-message">
-                    <img src={mensagem.image} alt="" />
+                    <img style={{width: 500}} src={`${BACKEND_URL}${mensagem.image.url}`} alt="" />
                 </div>
             )}
 

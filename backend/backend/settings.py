@@ -37,6 +37,8 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'backend.urls'
+MEDIA_URL = "/images/" 
+MEDIA_ROOT = BASE_DIR / "images"
 
 TEMPLATES = [
     {
