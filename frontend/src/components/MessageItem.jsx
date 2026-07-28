@@ -29,17 +29,18 @@ export function MessageItem({ mensagem, onReply, onDelete, }) {
                 </div>
             )}
 
-            {mensagem.image && (
-                <div className="image-message">
-                    <img style={{width: 500}} src={`${BACKEND_URL}${mensagem.image.url}`} alt="" />
-                </div>
-            )}
 
             <div className="top">
                 <strong>{mensagem.username}</strong>
                 <LuReply className="reply" title="Reply message" onClick={() => onReply(mensagem)} />
                 <IoTrashOutline className="trash" title="Delete message" onClick={() => onDelete(mensagem.id)} />
             </div>
+
+            {mensagem.image && (
+                <div className="image-message">
+                    <img style={{width: 500}} src={`${BACKEND_URL}${mensagem.image.url}`} alt="" />
+                </div>
+            )}
 
             <p>{mensagem.conteudo}</p>
             <small>{mensagem.enviado_as}</small>
