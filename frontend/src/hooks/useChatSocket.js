@@ -64,10 +64,10 @@ export function useChatSocket(nome, username) {
         }
     }, [nome, username])
 
-    const sendMessage = (inputc, reply, image) => {
+    const sendMessage = async (inputc, reply, image) => {
         let imageUrl = null
         if (image) {
-            imageUrl = uploadImage(image)
+            imageUrl = await uploadImage(image)
         }
 
         if (socketRef.current && inputc.trim() !== '') {
@@ -77,7 +77,6 @@ export function useChatSocket(nome, username) {
                 enviado_as: new Date().toLocaleString(),
                 resposta: reply?.id ?? null,
                 image: imageUrl ?? null
-
             }))
         }
     }
