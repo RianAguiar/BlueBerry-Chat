@@ -47,7 +47,7 @@ async def test_enviar_mensagem_e_persistida_e_broadcast_para_a_sala(sala):
     await communicator.receive_json_from()  # descarta o historico inicial
 
     await communicator.send_json_to({
-        "username": "rian",
+        "username": "ryan",
         "conteudo": "primeira mensagem",
         "enviado_as": "2026-07-29T14:30:00",
         "resposta": None,
@@ -55,7 +55,7 @@ async def test_enviar_mensagem_e_persistida_e_broadcast_para_a_sala(sala):
     })
 
     resposta = await communicator.receive_json_from()
-    assert resposta["username"] == "rian"
+    assert resposta["username"] == "ryan"
     assert resposta["conteudo"] == "primeira mensagem"
     assert resposta["resposta"] is None
     assert resposta["image"] is None
@@ -72,7 +72,7 @@ async def test_dois_clientes_na_mesma_sala_recebem_a_mesma_mensagem(sala):
     await cliente_2.receive_json_from()  # historico
 
     await cliente_1.send_json_to({
-        "username": "rian",
+        "username": "ryan",
         "conteudo": "oi pra sala toda",
         "enviado_as": "2026-07-29T14:30:00",
         "resposta": None,
@@ -99,7 +99,7 @@ async def test_mensagem_com_resposta_inclui_dados_da_mensagem_original(sala):
     await communicator.receive_json_from()  # historico
 
     await communicator.send_json_to({
-        "username": "rian",
+        "username": "ryan",
         "conteudo": "resposta aqui",
         "enviado_as": "2026-07-29T14:31:00",
         "resposta": original.id,
@@ -118,10 +118,10 @@ async def test_evento_join_e_repassado_para_a_sala(sala):
     communicator = await _conectar(sala.nome)
     await communicator.receive_json_from()  # historico
 
-    await communicator.send_json_to({"type": "join", "username": "rian"})
+    await communicator.send_json_to({"type": "join", "username": "ryan"})
 
     resposta = await communicator.receive_json_from()
-    assert resposta == {"type": "join", "username": "rian"}
+    assert resposta == {"type": "join", "username": "ryan"}
 
     await communicator.disconnect()
 
@@ -131,10 +131,10 @@ async def test_evento_typing_e_repassado_para_a_sala(sala):
     communicator = await _conectar(sala.nome)
     await communicator.receive_json_from()  # historico
 
-    await communicator.send_json_to({"type": "typing", "username": "rian"})
+    await communicator.send_json_to({"type": "typing", "username": "ryan"})
 
     resposta = await communicator.receive_json_from()
-    assert resposta == {"type": "typing", "username": "rian"}
+    assert resposta == {"type": "typing", "username": "ryan"}
 
     await communicator.disconnect()
 
