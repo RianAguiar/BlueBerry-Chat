@@ -3,6 +3,8 @@ import json
 from channels.generic.websocket import AsyncWebsocketConsumer
 from .models import Mensagem, Sala
 from channels.db import database_sync_to_async
+from django.core.cache import cache
+
 
 class ChatConsumer(AsyncWebsocketConsumer):
 #------------------- FUNÇÕES QUE ACESSAM O BANCO DE DADOS----------------------------
@@ -93,6 +95,18 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "tipo": "historico",
             "mensagens": historico
         }))
+        count = await self.increment_counter()
+
+            # envia para todos os clientes
+        await self.channel_layer.group_add("online", self.channel_name)
+
+        await self.channel_layer.group_send(
+            "online",
+            {
+                "type": "online_count",
+                "count": count,
+            }
+        )
 
 
     # Sair da sala
