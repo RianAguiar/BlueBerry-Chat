@@ -1,13 +1,12 @@
 import { useRef } from 'react'
 import { SlArrowRightCircle } from "react-icons/sl"
-import { FiPaperclip } from "react-icons/fi";
-
+import { GoPaperclip } from "react-icons/go"
 
 export function ChatInput({ value, onChange, onKeyDown, onSend, onAppend }) {
     const fileInputRef = useRef(null)
     return (
         <div className="input-container">
-            <FiPaperclip onClick={() => fileInputRef.current.click()} style={{ cursor: "pointer" }} />
+            <GoPaperclip onClick={() => fileInputRef.current.click()} style={{ cursor: "pointer" }} />
             <input ref={fileInputRef} type="file" accept="image/*" onChange={onAppend} style={{ display: "none" }}/>
             <input
                 type="text"
