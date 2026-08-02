@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react"
 export function useChatSocket(nome, username) {
     const [messages, setMessages] = useState([])
     const [typing, setTyping] = useState(null)
+    const [onlineCount, setOnlineCount] = useState()
     const [join, setJoin] = useState(null)
 
     const socketRef = useRef(null)
@@ -28,6 +29,11 @@ export function useChatSocket(nome, username) {
 
             if (data.tipo === "historico") {
                 setMessages(data.mensagens)
+                return
+            }
+
+            if (data.type === "onlineCount") {
+                setOnlineCount(data)
                 return
             }
 

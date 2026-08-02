@@ -22,8 +22,7 @@ export function Chat() {
     const [image, setImage] = useState(null)
     const chatRef = useRef(null)
 
-    const { messages, typing, join, sendMessage, deleteMessage, notifyTyping } =
-        useChatSocket(nome, username)
+    const { messages, typing, join, onlineCount, sendMessage, deleteMessage, notifyTyping } = useChatSocket(nome, username)
 
     useLayoutEffect(() => {
         window.scrollTo({ top: document.body.scrollHeight, behavior: "smooth" })
@@ -66,7 +65,7 @@ export function Chat() {
 
     return (
         <>
-            <ChatHeader nome={nome} username={username} onDeleteRoom={excluirSala} />
+            <ChatHeader nome={nome} username={username} onDeleteRoom={excluirSala} onlineCount={onlineCount} />
 
             <div className="chat-container">
                 <div className="chat-box">
