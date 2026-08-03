@@ -95,11 +95,9 @@ class ChatConsumer(AsyncWebsocketConsumer):
             "tipo": "historico",
             "mensagens": historico
         }))
+        # adicionar no contador de pessoas conectadas à sala
         count = await self.increment_counter()
-
-            # envia para todos os clientes
         await self.channel_layer.group_add("online", self.channel_name)
-
         await self.channel_layer.group_send(
             "online",
             {
@@ -112,6 +110,17 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Sair da sala
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.nome_sala, self.channel_name)
+
+        # subtrair no contador de pessoas conectadas à sala
+        count = await self.decrement_counter()
+        await self.channel_layer.group_add("online", self.channel_name)
+        await self.channel_layer.group_send(
+            "online",
+            {
+                "type": "online_count",
+                "count": count,
+            }
+        )
 
     """
     Recebe todas as mensagens enviadas pelo cliente via WebSocket
