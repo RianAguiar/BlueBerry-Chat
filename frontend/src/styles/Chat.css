@@ -75,8 +75,9 @@ p{
 }
 
 .input-container input {
-    color: white;
-    background-color: #2f0f67;
+    color: rgba(255, 255, 255, 0.434);
+    background-color: #2f0f6700;
+    backdrop-filter: blur(10px);
     flex: 1;
     padding: 10px;
     border-radius: 10px;
@@ -91,7 +92,7 @@ p{
 }
 
 .input-container input::placeholder{
-    color: white;
+    color: rgba(255, 255, 255, 0.505);
 }
 
 .input-container svg{
@@ -102,9 +103,8 @@ p{
     transition: 0.5s;
 }
 
-.input-container svg:hover{
-    color: rgb(0, 255, 0);
-    scale: 1.5;
+.input-container button:hover{
+    scale: 1.2;
 }
 
 .exit svg{
@@ -155,6 +155,9 @@ p{
     align-items: center;
     padding: 0px;
     z-index: 1000;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #50505075;
   
 }
 
@@ -199,6 +202,34 @@ body::-webkit-scrollbar-track {
     animation: slideDown 0.4s ease;
     animation: disappear 3s ease forwards;
 }
+
+.sendButton{
+    border-style: none;
+    border-radius: 6px;
+    background-color:#5220a9;
+    padding: 2px 12px;
+    transition: 0.5s;
+}
+
+.imageButton{
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 6px;
+    background-color:#5220a900;
+    backdrop-filter: blur(10px);
+    border-color: rgba(240, 248, 255, 0.200);
+    padding: 2px 4px;
+    transition: 0.5s;
+}
+
+.enviado-as{
+    color: rgb(170, 170, 170);
+}
+
+.image-message{
+    padding-top: 6px;
+}
+
 
 @keyframes slideDown {
     from {

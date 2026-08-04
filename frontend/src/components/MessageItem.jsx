@@ -31,7 +31,7 @@ export function MessageItem({ mensagem, onReply, onDelete, }) {
 
 
             <div className="top">
-                <strong>{mensagem.username}</strong>
+                <strong className="name">{mensagem.username}</strong>
                 <LuReply className="reply" title="Reply message" onClick={() => onReply(mensagem)} />
                 <IoTrashOutline className="trash" title="Delete message" onClick={() => onDelete(mensagem.id)} />
             </div>
@@ -43,7 +43,7 @@ export function MessageItem({ mensagem, onReply, onDelete, }) {
             )}
 
             <p>{mensagem.conteudo}</p>
-            <small>{mensagem.enviado_as}</small>
+            <small className="enviado-as">{mensagem.enviado_as}</small>
         </motion.div>
     )
 }

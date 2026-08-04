@@ -9,6 +9,20 @@ from django.core.cache import cache
 class ChatConsumer(AsyncWebsocketConsumer):
 #------------------- FUNÇÕES QUE ACESSAM O BANCO DE DADOS----------------------------
     @database_sync_to_async
+    def increment_counter(self):
+        key = f"online_{self.nome_sala}"
+        count = cache.get(key, 0) + 1
+        cache.set(key, count)
+        return count
+
+    @database_sync_to_async
+    def decrement_counter(self):
+        key = f"online_{self.nome_sala}"
+        count = max(cache.get(key, 1) - 1, 0)
+        cache.set(key, count)
+        return count
+
+    @database_sync_to_async
     def delete_message_db(self, nome, id):
         Mensagem.objects.filter(sala__nome=nome, id=id).delete()
         
@@ -99,7 +113,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         count = await self.increment_counter()
         await self.channel_layer.group_add("online", self.channel_name)
         await self.channel_layer.group_send(
-            "online",
+            f"online_{self.nome_sala}",
             {
                 "type": "online_count",
                 "count": count,
@@ -116,7 +130,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         count = await self.decrement_counter()
 
         await self.channel_layer.group_send(
-            "online",
+            f"online_{self.nome_sala}",
             {
                 "type": "online_count",
                 "count": count,
@@ -237,5 +251,11 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.send(text_data=json.dumps({
             "type": "join",
             "username": event["username"]
+        }))
+
+    async def online_count(self, event):
+        await self.send(text_data=json.dumps({
+            "type": "online_count",
+            "count": event["count"],
         }))
 #------------------------------------------------------------------------------------
