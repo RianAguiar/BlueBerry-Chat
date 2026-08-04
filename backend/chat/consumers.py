@@ -110,10 +110,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
     # Sair da sala
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(self.nome_sala, self.channel_name)
+        await self.channel_layer.group_discard(
+            "online",
+            self.channel_name
+        )
 
         # subtrair no contador de pessoas conectadas à sala
         count = await self.decrement_counter()
-        await self.channel_layer.group_add("online", self.channel_name)
+        
         await self.channel_layer.group_send(
             "online",
             {
