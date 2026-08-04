@@ -12,7 +12,7 @@ export function ChatHeader({ nome, username, onDeleteRoom, onlineCount}) {
             </div>
 
             <div className="chat-n-username">
-                <h4 className="char-room" title="Chat room">{nome} - <CiUser className="online-count"/>{onlineCount}</h4>
+                <h4 className="char-room" title="Chat room">{nome} - <span title="Users in this room" className="online-count"><CiUser/>{onlineCount}</span></h4>
                 <h5 title="Your username">{username}</h5>
             </div>
             

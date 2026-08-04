@@ -160,15 +160,33 @@ p{
     border-color: #50505075;
   
 }
-
-.chat-n-username h5{
-    margin: 0px;
+.chat-n-username {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-.chat-n-username h4{
-    margin: 0px;
+.chat-n-username h5 {
+    margin: 0;
 }
 
+.chat-n-username h4 {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.online-count {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.online-count svg {
+    width: 20px;
+    height: 20px;
+}
 .messages p {
     overflow-wrap: break-word;
     word-break: break-word;
@@ -229,6 +247,8 @@ body::-webkit-scrollbar-track {
 .image-message{
     padding-top: 6px;
 }
+
+
 
 
 @keyframes slideDown {

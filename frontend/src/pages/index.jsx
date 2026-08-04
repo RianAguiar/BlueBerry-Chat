@@ -2,6 +2,9 @@ import { Link, useNavigate } from "react-router-dom"
 import { useState } from 'react'
 import Gsc from '../components/Gsc'
 import '../styles/index.css'
+import { CiUser } from "react-icons/ci"
+import { MdOutlineMeetingRoom } from "react-icons/md";
+
 
 
 function Index() {
@@ -55,7 +58,9 @@ function Index() {
 
             <form onSubmit={IrParaSala} onKeyDown={handleKeyDown}>
               <input type="text" id='name' name='name' placeholder="Your Name" className="indexinput"onChange={(e) => setUsername(e.target.value)}/>
+              <CiUser/>
               <input type="text" id='roomname' name='roomname' placeholder="Room Name" className="indexinput"onChange={(e) => setNome(e.target.value)}/>
+              <MdOutlineMeetingRoom />
               < button className="indexenterbutton" type="submit" > Get In</button>
             </form>
 
