@@ -32,8 +32,8 @@ export function useChatSocket(nome, username) {
                 return
             }
 
-            if (data.type === "onlineCount") {
-                setOnlineCount(data)
+            if (data.type === "online_count") {
+                setOnlineCount(data.count)
                 return
             }
 
@@ -123,5 +123,5 @@ export function useChatSocket(nome, username) {
 
 
 
-    return { messages, typing, join, sendMessage, deleteMessage, notifyTyping, }
+    return { messages, typing, join, onlineCount, sendMessage, deleteMessage, notifyTyping, }
 }
