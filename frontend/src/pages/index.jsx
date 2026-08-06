@@ -104,7 +104,7 @@ function Index() {
 
           <div className="footer-links">
             <a
-              href="https://github.com/"
+              href="https://github.com/RianAguiar"
               target="_blank"
               rel="noreferrer"
             >
