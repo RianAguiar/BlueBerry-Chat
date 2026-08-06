@@ -11,6 +11,7 @@ import TypingIndicator from "../components/TypingIndicator"
 import JoinNotification from "../components/JoinNotification"
 import ChatInput from "../components/ChatInput"
 import '../styles/Chat.css'
+const apiUrl = import.meta.env.VITE_API_URL
 
 export function Chat() {
     const { nome } = useParams()
@@ -49,7 +50,7 @@ export function Chat() {
 
     const excluirSala = async () => {
         try {
-            const resposta = await fetch(`https://blueberry-chat.onrender.com/api/sala/${nome}/`, {
+            const resposta = await fetch(`${apiUrl}/api/sala/${nome}/`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             })

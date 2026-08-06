@@ -3,7 +3,8 @@ import { useState } from 'react'
 import Gsc from '../components/Gsc'
 import '../styles/index.css'
 import { CiUser } from "react-icons/ci"
-import { MdOutlineMeetingRoom } from "react-icons/md";
+import { MdOutlineMeetingRoom } from "react-icons/md"
+const apiUrl = import.meta.env.VITE_API_URL
 
 
 
@@ -30,7 +31,7 @@ function Index() {
 
     localStorage.setItem("username", username)
     const resposta = await fetch(
-      `https://blueberry-chat.onrender.com/api/sala/${nome}/`,
+      `${apiUrl}/api/sala/${nome}/`,
       {
         method: "POST",
         headers: {

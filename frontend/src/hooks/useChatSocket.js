@@ -5,14 +5,16 @@ export function useChatSocket(nome, username) {
     const [typing, setTyping] = useState(null)
     const [onlineCount, setOnlineCount] = useState()
     const [join, setJoin] = useState(null)
-
     const socketRef = useRef(null)
     const typingTimeout = useRef(null)
     const joinTimeout = useRef(null)
+    const apiUrl = import.meta.env.VITE_API_URL
+    const wsUrl = import.meta.env.VITE_WS_URL
+
 
     useEffect(() => {
         socketRef.current = new WebSocket(
-            `ws://localhost:8000/ws/sala/${nome}/mensagens/`
+            `${wsUrl}/ws/sala/${nome}/mensagens/`
         )
 
         socketRef.current.onopen = () => {
@@ -105,7 +107,7 @@ export function useChatSocket(nome, username) {
     const formData = new FormData()
     formData.append("image", image)
 
-    const response = await fetch(`https://blueberry-chat.onrender.com/api/sala/${nome}/mensagens/upload-imagem/`, {
+    const response = await fetch(`${apiUrl}/api/sala/${nome}/mensagens/upload-imagem/`, {
         method: "POST",
         body: formData,
     })
