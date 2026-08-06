@@ -229,6 +229,11 @@ body::-webkit-scrollbar-track {
     transition: 0.5s;
 }
 
+.sendButton:hover{
+    background-color: rgb(23, 173, 63);
+}
+
+
 .imageButton{
     border-width: 1px;
     border-style: solid;

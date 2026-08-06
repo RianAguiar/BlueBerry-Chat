@@ -1,5 +1,6 @@
 import {BrowserRouter, Routes, Route, Link} from 'react-router-dom'
 import Index from './pages'
+import About from './pages/about'
 import Chat from './pages/Chat'
 
 function App() {
@@ -7,6 +8,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Index/>} />
+        <Route path="/about/" element={<About />} />
         <Route path="/sala/:nome" element={<Chat />} />
       </Routes>
     </BrowserRouter>

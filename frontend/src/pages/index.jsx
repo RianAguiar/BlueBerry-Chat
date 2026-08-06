@@ -13,15 +13,15 @@ function Index() {
   const navigate = useNavigate()
 
   function handleKeyDown(e) {
-      if (e.key === "Enter") {
-          e.preventDefault()
+    if (e.key === "Enter") {
+      e.preventDefault()
 
-          if (!message.trim()) {
-              alert("Digite uma mensagem.")
-              return
-          }
-          enviarDados()
+      if (!message.trim()) {
+        alert("Digite uma mensagem.")
+        return
       }
+      enviarDados()
+    }
   }
 
   /*ENVIAR URL(NOME DA SALA)DIGITADO NO FORM */
@@ -49,18 +49,41 @@ function Index() {
   return (
     <>
 
-      <h1 id='avocadochat' className='avocadochat'><img src="/BlueBerry.png" width='100px'/>BlueBerry Chat</h1>
-      <p className="index-p">Anonymous real-time chat. Create or join a room instantly — no account required</p>
+      <h1 id='avocadochat' className='avocadochat'><img src="/BlueBerry.png" width='100px' />BlueBerry Chat</h1>
+      <p className="index-p">Real-time chat. Create or join a room instantly — no account required</p>
 
       <div className='indexcontainerdad'>
         <div className='indexcontainer'>
           <div>
 
             <form onSubmit={IrParaSala} onKeyDown={handleKeyDown}>
-              <input type="text" id='name' name='name' placeholder="Your Name" className="indexinput"onChange={(e) => setUsername(e.target.value)}/>
-              <CiUser/>
-              <input type="text" id='roomname' name='roomname' placeholder="Room Name" className="indexinput"onChange={(e) => setNome(e.target.value)}/>
-              <MdOutlineMeetingRoom />
+              <div className="index-input-container">
+                <CiUser className="index-input-icon" />
+
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  placeholder="Your Name"
+                  className="indexinput"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                />
+              </div>
+
+              <div className="index-input-container">
+                <MdOutlineMeetingRoom className="index-input-icon" />
+
+                <input
+                  type="text"
+                  id="roomname"
+                  name="roomname"
+                  placeholder="Room Name"
+                  className="indexinput"
+                  value={nome}
+                  onChange={(e) => setNome(e.target.value)}
+                />
+              </div>
               < button className="indexenterbutton" type="submit" > Get In</button>
             </form>
 
@@ -71,6 +94,36 @@ function Index() {
       <div>
         <Gsc className='indexeasteregg' />
       </div>
+
+      <footer className="index-footer">
+        <div className="footer-content">
+
+          <span className="footer-description">
+            Privacity • Simple • Real-time
+          </span>
+
+          <div className="footer-links">
+            <a
+              href="https://github.com/"
+              target="_blank"
+              rel="noreferrer"
+            >
+              GitHub
+            </a>
+
+            <span>•</span>
+
+            <Link to="/about">about</Link>
+
+            <span>•</span>
+
+            <span>
+              GSC & RAS
+            </span>
+          </div>
+
+        </div>
+      </footer>
     </>
   )
 }
