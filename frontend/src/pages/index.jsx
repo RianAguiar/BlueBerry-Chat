@@ -30,7 +30,7 @@ function Index() {
 
     localStorage.setItem("username", username)
     const resposta = await fetch(
-      `http://127.0.0.1:8000/api/sala/${nome}/`,
+      `https://blueberry-chat.onrender.com/api/sala/${nome}/`,
       {
         method: "POST",
         headers: {

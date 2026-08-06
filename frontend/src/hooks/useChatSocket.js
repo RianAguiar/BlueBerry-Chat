@@ -105,7 +105,7 @@ export function useChatSocket(nome, username) {
     const formData = new FormData()
     formData.append("image", image)
 
-    const response = await fetch(`http://localhost:8000/api/sala/${nome}/mensagens/upload-imagem/`, {
+    const response = await fetch(`https://blueberry-chat.onrender.com/api/sala/${nome}/mensagens/upload-imagem/`, {
         method: "POST",
         body: formData,
     })

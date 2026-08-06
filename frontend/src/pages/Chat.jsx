@@ -49,7 +49,7 @@ export function Chat() {
 
     const excluirSala = async () => {
         try {
-            const resposta = await fetch(`http://127.0.0.1:8000/api/sala/${nome}/`, {
+            const resposta = await fetch(`https://blueberry-chat.onrender.com/api/sala/${nome}/`, {
                 method: "DELETE",
                 headers: { "Content-Type": "application/json" },
             })
