@@ -169,7 +169,7 @@ function About() {
 
 
         <section className="about-section last-section">
-          <h2>Use responsibly 💜</h2>
+          <h2>Use responsibly 🧛‍♀️</h2>
 
           <p>
             BlueBerry Chat was created to provide a simple and accessible
