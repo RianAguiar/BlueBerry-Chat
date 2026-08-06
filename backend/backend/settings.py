@@ -1,10 +1,18 @@
 
 from pathlib import Path
 from datetime import timedelta
+import os
+import dj_database_url
+import environ
+
+
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-u_vp74uc1d*hd=w$sbvd9^@jpzcm8c7m=o-!n)4z!m80466!^n'
-DEBUG = True
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env.bool("DEBUG")
 ALLOWED_HOSTS = []
 
 
@@ -62,12 +70,8 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    "default": env.db("DATABASE_URL")
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
