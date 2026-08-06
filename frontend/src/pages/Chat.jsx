@@ -1,8 +1,8 @@
 import { useParams, useNavigate } from "react-router-dom"
 import { useState, useRef, useLayoutEffect } from 'react'
-import HandleEnterKey from "../components/HandleEnterKey"
+import HandleEnterKey from "../components/handleEnterKey"
 import Debouncer from "../components/Debouncer"
-import Pop from "../components/Pop"
+import Pop from "../components/pop"
 import { useChatSocket } from "../hooks/useChatSocket"
 import ChatHeader from "../components/ChatHeader"
 import MessageList from "../components/MessageList"
