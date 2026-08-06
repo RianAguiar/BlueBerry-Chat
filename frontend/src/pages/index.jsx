@@ -103,6 +103,9 @@ function Index() {
           </span>
 
           <div className="footer-links">
+            <span>© 2026 BlueBerry Chat</span>
+
+            <span>•</span>
             <a
               href="https://github.com/RianAguiar"
               target="_blank"

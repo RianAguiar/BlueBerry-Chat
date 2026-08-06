@@ -12,7 +12,7 @@ function About() {
         </Link>
 
         <Link to="/" className="back-button">
-          Back to Chat
+          Back 
         </Link>
       </header>
 
