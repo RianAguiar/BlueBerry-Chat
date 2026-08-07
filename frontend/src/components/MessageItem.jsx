@@ -3,7 +3,7 @@ import { LuReply } from "react-icons/lu"
 import { IoTrashOutline } from "react-icons/io5"
 
 export function MessageItem({ mensagem, onReply, onDelete, }) {
-    const BACKEND_URL = "http://localhost:8000"
+    const BACKEND_URL = "https://blueberry-chat-back.onrender.com"
 
     return (
         <motion.div
