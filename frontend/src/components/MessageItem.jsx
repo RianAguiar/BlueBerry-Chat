@@ -38,7 +38,7 @@ export function MessageItem({ mensagem, onReply, onDelete, }) {
 
             {mensagem.image && (
                 <div className="image-message">
-                    <img style={{width: 500}} src={`${BACKEND_URL}${mensagem.image.url}`} alt="" />
+                    <img style={{maxWidth: "100%", height: "auto", borderRadius: "10px"}} src={`${BACKEND_URL}${mensagem.image.url}`} alt="" />
                 </div>
             )}
 
