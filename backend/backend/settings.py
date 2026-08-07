@@ -1,205 +1,141 @@
+
 from pathlib import Path
 from datetime import timedelta
-import os
-import environ
-
-
-# ============================================================
-# BASE
-# ============================================================
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-
-env = environ.Env()
-environ.Env.read_env(BASE_DIR / ".env")
-
-
-# ============================================================
-# SECURITY
-# ============================================================
-
-SECRET_KEY = env(
-    "SECRET_KEY",
-    default="django-insecure-local-development-key"
-)
-
+SECRET_KEY = 'django-insecure-u_vp74uc1d*hd=w$sbvd9^@jpzcm8c7m=o-!n)4z!m80466!^n'
 DEBUG = True
-
-ALLOWED_HOSTS = [
-    "localhost",
-    "127.0.0.1",
-]
+ALLOWED_HOSTS = []
 
 
-# ============================================================
-# APPLICATIONS
-# ============================================================
+# Application definition
 
 INSTALLED_APPS = [
-    "daphne",
-
-    "django.contrib.admin",
-    "django.contrib.auth",
-    "django.contrib.contenttypes",
-    "django.contrib.sessions",
-    "django.contrib.messages",
-    "django.contrib.staticfiles",
-
-    "rest_framework",
-    "channels",
+    'daphne',
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'rest_framework',
+    'channels',
+    'chat',
+    # importante instalar o corsheaders pq se n o navegador descarta a resposta da api
     "corsheaders",
-
-    "chat",
 ]
-
-
-# ============================================================
-# MIDDLEWARE
-# ============================================================
 
 MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",
-
-    "django.middleware.security.SecurityMiddleware",
-    "django.contrib.sessions.middleware.SessionMiddleware",
-    "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
-    "django.contrib.auth.middleware.AuthenticationMiddleware",
-    "django.contrib.messages.middleware.MessageMiddleware",
-    "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    'django.middleware.security.SecurityMiddleware',
+    'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.common.CommonMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
+    'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-
-# ============================================================
-# URL / TEMPLATES
-# ============================================================
-
-ROOT_URLCONF = "backend.urls"
+ROOT_URLCONF = 'backend.urls'
+MEDIA_URL = "/images/" 
+MEDIA_ROOT = BASE_DIR / "images"
 
 TEMPLATES = [
     {
-        "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
-        "APP_DIRS": True,
-        "OPTIONS": {
-            "context_processors": [
-                "django.template.context_processors.request",
-                "django.contrib.auth.context_processors.auth",
-                "django.contrib.messages.context_processors.messages",
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': [],
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': [
+                'django.template.context_processors.request',
+                'django.contrib.auth.context_processors.auth',
+                'django.contrib.messages.context_processors.messages',
             ],
         },
     },
 ]
 
-
-# ============================================================
-# WSGI / ASGI
-# ============================================================
-
-WSGI_APPLICATION = "backend.wsgi.application"
-
-ASGI_APPLICATION = "backend.asgi.application"
+WSGI_APPLICATION = 'backend.wsgi.application'
 
 
-# ============================================================
-# DATABASE - SQLITE
-# ============================================================
+# Database
+# https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.sqlite3",
-        "NAME": BASE_DIR / "db.sqlite3",
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
 
 
-# ============================================================
-# MEDIA
-# ============================================================
-
-MEDIA_URL = "/images/"
-MEDIA_ROOT = BASE_DIR / "images"
-
-
-# ============================================================
-# PASSWORD VALIDATION
-# ============================================================
+# Password validation
+# https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        "NAME": "django.contrib.auth.password_validation.UserAttributeSimilarityValidator",
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
     },
     {
-        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
     },
     {
-        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
     },
     {
-        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
 
 
-# ============================================================
-# INTERNATIONALIZATION
-# ============================================================
+# Internationalization
+# https://docs.djangoproject.com/en/5.2/topics/i18n/
 
-LANGUAGE_CODE = "pt-br"
+LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = "America/Sao_Paulo"
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 
 USE_TZ = True
 
 
-# ============================================================
-# STATIC FILES
-# ============================================================
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = "static/"
+STATIC_URL = 'static/'
 
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
-# ============================================================
-# DEFAULT PRIMARY KEY
-# ============================================================
-
-DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-
-
-# ============================================================
-# DJANGO REST FRAMEWORK
-# ============================================================
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
-    "DEFAULT_AUTHENTICATION_CLASSES": (
-        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    'DEFAULT_AUTHENTICATION_CLASSES' : (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
 
-# ============================================================
-# REDIS / DJANGO CHANNELS
-# ============================================================
 
+ASGI_APPLICATION = 'backend.asgi.application'
+
+'''
+Para desenvolvimento é mais comodo usar o channel_layer do django channels
+mas em ambiente de produção, usar o redis channel layer é melhor
+'''
 CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [
-                ("127.0.0.1", 6379),
-            ],
+            "hosts": [("127.0.0.1", 6379)],
         },
     },
 }
 
-
-# ============================================================
-# CORS - REACT LOCAL
-# ============================================================
-
+''' importante colocar isso se n o react n consegue fazer o fetch na api '''
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
+    'http://localhost:5173',
+    'http://127.0.0.1:5173',
 ]
+
