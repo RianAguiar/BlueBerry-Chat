@@ -1,12 +1,22 @@
 
 from pathlib import Path
 from datetime import timedelta
+import os
+import dj_database_url
+import environ
+
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = 'django-insecure-u_vp74uc1d*hd=w$sbvd9^@jpzcm8c7m=o-!n)4z!m80466!^n'
-DEBUG = True
-ALLOWED_HOSTS = []
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
+SECRET_KEY = env("SECRET_KEY")
+DEBUG = env.bool("DEBUG")
 
+ALLOWED_HOSTS = [
+    "localhost",
+    "127.0.0.1",
+    ".onrender.com",
+]
 
 # Application definition
 
@@ -62,11 +72,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+    "default": env.db("DATABASE_URL")
 
 
 # Password validation
@@ -128,7 +134,7 @@ CHANNEL_LAYERS = {
     "default": {
         "BACKEND": "channels_redis.core.RedisChannelLayer",
         "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
+            "hosts": [env("REDIS_URL")],
         },
     },
 }
@@ -137,5 +143,6 @@ CHANNEL_LAYERS = {
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:5173',
     'http://127.0.0.1:5173',
+    "https://blueberrychat.onrender.com",
 ]
 
