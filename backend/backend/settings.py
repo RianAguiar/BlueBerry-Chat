@@ -142,7 +142,9 @@ CHANNEL_LAYERS = {
 
 ''' importante colocar isso se n o react n consegue fazer o fetch na api '''
 CORS_ALLOWED_ORIGINS = [
+    'https://blueberrychat.onrender.com',
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'https://blueberrychat.onrender.com',
 ]
+
+CORS_ALLOW_CREDENTIALS = False
