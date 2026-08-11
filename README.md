@@ -2,6 +2,15 @@
 My project consists of a practical, chat system that requires no account creation or login. To access it, users simply need to enter with a nickname and the name of the room they wish to join. If the specified room doesn't exist, it's created automatically, if it already exists, the system retrieves the message history from previous participants. The goal is to provide a simple, fast, and accessible communication platform while preserving the participants' partial anonymity.
 
 Chat Project to improve my code skills and my stack, where i document all my evolution and project's progress
+### Infrastructure
+
+All infrastructure is currently hosted on **free-tier services**:
+
+| Service | Provider |
+|---|---|
+| Frontend & Backend | [Render](https://render.com/) |
+| Redis | [Upstash](https://upstash.com/) |
+| Database | [Supabase](https://supabase.com/) |
 
 # INDEX PAGE
 <p align="center">
@@ -21,9 +30,9 @@ Chat Project to improve my code skills and my stack, where i document all my evo
 - SQLite
 - Docker
 - Redis
-- PostgreSQL (soon)
+- PostgreSQL 
 - Celery (soon)
-- TDD (soon)
+- TDD 
 # Installation
 
 ## 1. Create a virtual environment
