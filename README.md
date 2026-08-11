@@ -4,7 +4,7 @@ My project consists of a practical, chat system that requires no account creatio
 Chat Project to improve my code skills and my stack, where i document all my evolution and project's progress
 ### Infrastructure
 
-All infrastructure is currently hosted on **free-tier services**:
+All infrastructure is currently hosted on **free-tier services** (which is so slow 😭):
 
 | Service | Provider |
 |---|---|
