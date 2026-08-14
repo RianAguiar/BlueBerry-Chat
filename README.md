@@ -33,7 +33,7 @@ All infrastructure is currently hosted on **free-tier services** (which is so sl
 - TDD
 
 # Architecture
-
+```text
 ┌──────────────────────┐
 │        React         │
 │      Frontend        │
@@ -66,6 +66,7 @@ All infrastructure is currently hosted on **free-tier services** (which is so sl
 ┌───────────────────┐
 │    PostgreSQL     │
 └───────────────────┘
+```
 
 # Installation
 
