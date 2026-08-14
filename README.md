@@ -1,7 +1,6 @@
 # Chat
 My project consists of a practical, chat system that requires no account creation or login. To access it, users simply need to enter with a nickname and the name of the room they wish to join. If the specified room doesn't exist, it's created automatically, if it already exists, the system retrieves the message history from previous participants. The goal is to provide a simple, fast, and accessible communication platform while preserving the participants' partial anonymity.
 
-Chat Project to improve my code skills and my stack, where i document all my evolution and project's progress
 ### Infrastructure
 
 All infrastructure is currently hosted on **free-tier services** (which is so slow 😭):
@@ -27,12 +26,47 @@ All infrastructure is currently hosted on **free-tier services** (which is so sl
 - Django Channels
 - Websocket
 - React
-- SQLite
 - Docker
 - Redis
-- PostgreSQL 
-- Celery (soon)
-- TDD 
+- SQLite (Development)
+- PostgreSQL (Production)
+- TDD
+
+# Architecture
+
+┌──────────────────────┐
+│        React         │
+│      Frontend        │
+└──────────┬───────────┘
+           │
+      HTTP / WebSocket
+           │
+┌──────────▼───────────┐
+│       Django         │
+│                      │
+│  ┌────────────────┐  │
+│  │ Django REST    │  │
+│  │ Framework      │  │
+│  └────────────────┘  │
+│                      │
+│  ┌────────────────┐  │
+│  │ Django Channels│  │
+│  └────────────────┘  │
+└───────┬───────┬──────┘
+        │       │
+        │       │ WebSocket
+        │       │ Channel Layer
+        │       ▼
+        │   ┌─────────┐
+        │   │  Redis  │
+        │   └─────────┘
+        │
+        │ Persistence
+        ▼
+┌───────────────────┐
+│    PostgreSQL     │
+└───────────────────┘
+
 # Installation
 
 ## 1. Create a virtual environment
