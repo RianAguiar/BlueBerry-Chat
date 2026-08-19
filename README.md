@@ -1,121 +1,207 @@
-# Chat
-My project consists of a practical, chat system that requires no account creation or login. To access it, users simply need to enter with a nickname and the name of the room they wish to join. If the specified room doesn't exist, it's created automatically, if it already exists, the system retrieves the message history from previous participants. The goal is to provide a simple, fast, and accessible communication platform while preserving the participants' partial anonymity.
+# BlueBerry Chat
 
-Chat Project to improve my code skills and my stack, where i document all my evolution and project's progress
+A practical, low-friction chat system that requires no account creation or login. Users get partial anonymity — just enter a nickname and the name of the room they want to join.
 
-# INDEX PAGE
+- If the room doesn't exist, it's created automatically.
+- If it already exists, the full message history is retrieved for the new participant.
+
+The goal is to provide a simple, fast and accessible communication platform while preserving participants' partial anonymity.
+
+## Features
+
+- No sign-up or login required
+- Nickname-based partial anonymity
+- Real-time messaging via WebSocket
+- Message deletion function
+- Reply message function
+- Automatic room creation
+- Persistent message history per room
+- Room deletion function
+- image sending 
+- online users count
+- Typing indicator
+- Join notification ex:"Cartman has just joined"
+
+### Index page
 <p align="center">
   <img src="frontend/Documentation/IndexGif.gif" width="1000px" height="530px"/>
 </p>
 
-# CHAT PAGE
+### Chat page
 <p align="center">
   <img src="frontend/Documentation/SplitedChatGif.gif" width="1000px" height="530px"/>
 </p>
 
-# STACK
+## Stack
+
 - Django Rest Framework
 - Django Channels
-- Websocket
+- WebSocket
 - React
-- SQLite
 - Docker
 - Redis
-- PostgreSQL (soon)
-- Celery (soon)
-- TDD (soon)
-# Installation
+- SQLite (Development)
+- PostgreSQL (Production)
+- TDD
 
-## 1. Create a virtual environment
+## Architecture
 
-```bash
-python -m venv venv
+```text
+┌──────────────────────┐
+│        React         │
+│      Frontend        │
+└──────────┬───────────┘
+           │
+      HTTP / WebSocket
+           │
+┌──────────▼───────────┐
+│       Django         │
+│                       │
+│  ┌────────────────┐  │
+│  │ Django REST    │  │
+│  │ Framework      │  │
+│  └────────────────┘  │
+│                       │
+│  ┌────────────────┐  │
+│  │ Django Channels│  │
+│  └────────────────┘  │
+└───────┬───────┬───────┘
+        │       │
+        │       │ WebSocket
+        │       │ Channel Layer
+        │       ▼
+        │   ┌─────────┐
+        │   │  Redis  │
+        │   └─────────┘
+        │
+        │ Persistence
+        ▼
+┌───────────────────┐
+│    PostgreSQL     │
+└───────────────────┘
 ```
 
-## 2. Activate the virtual environment
+## Infrastructure
 
-**Windows**
+All infrastructure is currently hosted on **free-tier services** (which is why it's a bit slow 😭):
 
-```bash
-venv\Scripts\activate
+| Service | Provider |
+|---|---|
+| Frontend & Backend | [Render](https://render.com/) |
+| Redis | [Upstash](https://upstash.com/) |
+| Database | [Supabase](https://supabase.com/) |
+
+> Locally, this setup is replaced by a Dockerized Redis instance and SQLite — see [Installation](#-installation) below.
+
+## Requirements
+
+- Python 3.10+
+- Node.js 18+
+- Docker Desktop (with WSL2 enabled, if on Windows)
+
+## Environment variables
+
+Create a `.env` file inside `backend/` with at least:
+
+```
+SECRET_KEY=your-secret-key
+DEBUG=True
+REDIS_URL=redis://localhost:6379
+DATABASE_URL=sqlite:///db.sqlite3
 ```
 
-## 3. Install dependencies
+> For production, `REDIS_URL` and `DATABASE_URL` should point to your Upstash and Supabase instances instead. Adjust this list to match what `settings.py` actually reads.
 
-**Backend**
+## 🚀 Installation (local development)
 
-```bash
-pip install -r requirements.txt
-```
-
-**Frontend**
-
-```bash
-cd frontend
-npm install
-```
-
-## 4. Start the application
-
-Start the Django server:
-
-```bash
-cd backend
-python manage.py runserver
-```
-
-Open a new terminal and start the React application:
-
-```bash
-cd frontend
-npm run dev
-```
-
----
-
-# Redis Setup (Windows + Docker)
-
-This project uses **Redis** with **Django Channels** for real-time communication
-
-## Prerequisites
-
-- Docker Desktop (WSL2 enabled)
-
-## 1. Pull the Redis image
+### 1. Start Redis first (required by Django Channels)
 
 ```bash
 docker pull redis
-```
-
-## 2. Run the Redis container
-
-```bash
 docker run --name redis-chat -p 6379:6379 -d redis
 ```
 
-## 3. Check if the container is running
+Make sure Docker Desktop is running before this step. To confirm the container is up:
 
 ```bash
 docker ps
 ```
 
-## 4. Start the container (if it was stopped)
+If you already created the container before, just start it again:
 
 ```bash
 docker start redis-chat
 ```
 
-## 5. Stop the container
+To stop it later:
 
 ```bash
 docker stop redis-chat
 ```
 
-> **Note:** Make sure Docker Desktop is running before starting the Django server.
+### 2. Create and activate a virtual environment
 
----
+```bash
+python -m venv venv
+```
 
-# Optional Tools
+**Windows**
+```bash
+venv\Scripts\activate
+```
+
+**macOS / Linux**
+```bash
+source venv/bin/activate
+```
+
+### 3. Install dependencies
+
+**Backend**
+```bash
+pip install -r requirements.txt
+```
+
+**Frontend**
+```bash
+cd frontend
+npm install
+```
+
+### 4. Apply database migrations
+
+```bash
+cd backend
+python manage.py migrate
+```
+
+### 5. Run the application
+
+Start the Django server:
+```bash
+cd backend
+python manage.py runserver
+```
+
+In a new terminal, start the React app:
+```bash
+cd frontend
+npm run dev
+```
+
+## Optional Tools
 
 - **SQLite Viewer** (VS Code extension)
 - **WebSocket Tester:** https://hoppscotch.io/realtime/websocket
+
+## Contributing
+
+Issues and pull requests are welcome. Please open an issue first to discuss what you'd like to change.
+
+## License
+
+This project is licensed under the MIT License — see the [LICENSE](LICENSE) file for details.
+
+## Author
+
+Made by [Rian Aguiar](https://github.com/RianAguiar)
